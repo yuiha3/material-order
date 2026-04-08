@@ -50,9 +50,9 @@ const MATERIALS = {
     "Micro ACE(13mm) 3インチ",
   ],
   "関西ペイント": [
-    "アレスホルダーHG 16kg",
-    "アレスホルダーダイナミックフィラー 16kg",
-    "アレスダイナミックプラサフII 16kg",
+    "アレスホルダーHG",
+    "アレスダイナミックフィラー",
+    "アレスダイナミックプラサフII",
     "アレスダイナミックTOP",
     "セラMレタン",
     "セラMシリコン",
@@ -76,9 +76,9 @@ const DISPLAY_MAKER_NAMES = {
 const UNITS = ["箱", "袋", "缶"];
 const SIZES = ["16kg", "4kg"];
 const FIXED_16KG_ITEMS = new Set([
-  "アレスホルダーHG 16kg",
-  "アレスホルダーダイナミックフィラー 16kg",
-  "アレスダイナミックプラサフII 16kg",
+  "アレスホルダーHG",
+  "アレスダイナミックフィラー",
+  "アレスダイナミックプラサフII",
 ]);
 
 const SHEENS = ["艶あり", "7分艶", "半艶", "3分艶", "艶なし"];
@@ -99,7 +99,7 @@ const SK_COLOR_ITEMS = new Set(["水性ミラクシーラーエコ"]);
 const KENACE_FIXED_ITEMS = new Set(["水性ケンエース"]);
 const KENACE_GLOSS_ITEMS = new Set(["水性ケンエースグロス"]);
 
-const STAFF_NAMES = ["山下", "藤ノ木", "高崎"];
+const STAFF_NAMES = ["高崎", "上田", "石澤", "栗原", "齊藤", "ウンス", "滝本", "山下", "藤ノ木", "福王寺", "大浦"];
 const PLACEHOLDER_TEXT = "(選択した材料がここに表示されます)";
 const TAB_CONFIG = {
   "資材": ["ダイヤテックス", "Nitto", "カモ井", "スコッチ", "大塚刷毛(マスカー・容器)", "大塚刷毛(ローラー)"],
@@ -108,7 +108,7 @@ const TAB_CONFIG = {
   "防水": [],
 };
 
-let selectedStaffName = "山下";
+let selectedStaffName = "藤ノ木";
 let activeTab = "資材";
 const selectedItems = {};
 
