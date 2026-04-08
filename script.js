@@ -75,6 +75,12 @@ const DISPLAY_MAKER_NAMES = {
 
 const UNITS = ["箱", "袋", "缶"];
 const SIZES = ["16kg", "4kg"];
+const FIXED_16KG_ITEMS = new Set([
+  "アレスホルダーHG 16kg",
+  "アレスホルダーダイナミックフィラー 16kg",
+  "アレスダイナミックプラサフII 16kg",
+]);
+
 const SHEENS = ["艶あり", "7分艶", "半艶", "3分艶", "艶なし"];
 const ECOFINE_SHEENS = ["艶あり", "半艶", "3分艶", "艶なし"];
 const KENACE_GLOSS_SHEENS = ["艶あり", "7分艶", "半艶", "3分艶"];
@@ -115,8 +121,6 @@ const searchInput = document.getElementById("searchInput");
 const copyBtn = document.getElementById("copyBtn");
 const resetBtn = document.getElementById("resetBtn");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
-const expandAllBtn = document.getElementById("expandAllBtn");
-const collapseEmptyBtn = document.getElementById("collapseEmptyBtn");
 const staffSelect = document.getElementById("staffSelect");
 const tabButtons = document.querySelectorAll(".tab-btn");
 
@@ -152,6 +156,10 @@ function isKenaceFixedItem(item) {
 
 function isKenaceGlossItem(item) {
   return KENACE_GLOSS_ITEMS.has(item);
+}
+
+function isFixed16kgItem(item) {
+  return FIXED_16KG_ITEMS.has(item);
 }
 
 function isAnySizeColorSheenItem(item) {
@@ -196,7 +204,7 @@ function refreshPreview() {
   ).size;
 
   selectedCountEl.textContent = String(count);
-  makerCountEl.textContent = String(selectedMakerCount);
+  if (makerCountEl) makerCountEl.textContent = String(selectedMakerCount);
 
   if (!ordered.length) {
     resultText.value = PLACEHOLDER_TEXT;
@@ -282,7 +290,7 @@ function ensureSelectedDefaults(maker, item) {
   }
 }
 
-function createSelect(options, value, onChange) {
+function createSelect(options, value, onChange, disabled = false) {
   const select = document.createElement("select");
   options.forEach(optionValue => {
     const option = document.createElement("option");
@@ -291,6 +299,8 @@ function createSelect(options, value, onChange) {
     if (optionValue === value) option.selected = true;
     select.appendChild(option);
   });
+
+  select.disabled = disabled;
 
   select.addEventListener("change", (e) => {
     e.stopPropagation();
@@ -302,11 +312,12 @@ function createSelect(options, value, onChange) {
   return select;
 }
 
-function createInput(type, value, placeholder, onInput) {
+function createInput(type, value, placeholder, onInput, disabled = false) {
   const input = document.createElement("input");
   input.type = type;
   input.value = value;
   input.placeholder = placeholder;
+  input.disabled = disabled;
 
   input.addEventListener("input", (e) => {
     e.stopPropagation();
@@ -379,8 +390,16 @@ function buildItemCard(maker, item) {
     controls.className = "controls";
     const data = selectedItems[item];
 
-    const inlinePair = document.createElement("div");
-    inlinePair.className = "inline-pair";
+    const topInline = document.createElement("div");
+    topInline.className = "inline-triple";
+
+    const isFixedPaint16kg = isFixed16kgItem(item);
+
+    const sizeControl = isFixedPaint16kg
+      ? createInput("text", "16kg", "", () => {}, true)
+      : createSelect(SIZES, data.size || "16kg", (e) => {
+          selectedItems[item].size = e.target.value;
+        });
 
     const qtyInput = createInput("number", data.qty || "1", "数量", (e) => {
       selectedItems[item].qty = e.target.value.replace(/[^0-9]/g, "");
@@ -393,20 +412,29 @@ function buildItemCard(maker, item) {
       selectedItems[item].unit = e.target.value;
     });
 
-    inlinePair.appendChild(buildControlField("数量", qtyInput));
-    inlinePair.appendChild(buildControlField("単位", unitSelect));
-    controls.appendChild(inlinePair);
+    if (
+      isAnySizeColorSheenItem(item) ||
+      isRustItem(item)
+    ) {
+      topInline.appendChild(buildControlField("容量", sizeControl));
+      topInline.appendChild(buildControlField("数量", qtyInput));
+      topInline.appendChild(buildControlField("単位", unitSelect));
+      controls.appendChild(topInline);
+    } else {
+      const qtyUnitInline = document.createElement("div");
+      qtyUnitInline.className = "inline-pair";
+      qtyUnitInline.appendChild(buildControlField("数量", qtyInput));
+      qtyUnitInline.appendChild(buildControlField("単位", unitSelect));
+      controls.appendChild(qtyUnitInline);
+    }
 
     if (isAnySizeColorSheenItem(item)) {
-      const sizeSelect = createSelect(SIZES, data.size || "16kg", (e) => {
-        selectedItems[item].size = e.target.value;
-      });
-      controls.appendChild(buildControlField("容量", sizeSelect));
+      const colorSheenInline = document.createElement("div");
+      colorSheenInline.className = "inline-pair";
 
       const colorInput = createInput("text", data.color || "", "色番", (e) => {
         selectedItems[item].color = e.target.value.trim();
       });
-      controls.appendChild(buildControlField("色番", colorInput));
 
       const sheenSelect = createSelect(
         sheenValuesForItem(item),
@@ -415,20 +443,17 @@ function buildItemCard(maker, item) {
           selectedItems[item].sheen = e.target.value;
         }
       );
-      controls.appendChild(buildControlField("艶", sheenSelect));
-    } else if (isRustItem(item)) {
-      const sizeSelect = createSelect(SIZES, data.size || "16kg", (e) => {
-        selectedItems[item].size = e.target.value;
-      });
-      controls.appendChild(buildControlField("容量", sizeSelect));
 
+      colorSheenInline.appendChild(buildControlField("色番", colorInput));
+      colorSheenInline.appendChild(buildControlField("艶", sheenSelect));
+      controls.appendChild(colorSheenInline);
+    } else if (isRustItem(item)) {
       const rustSelect = createSelect(ZAURUS_COLORS, data.rust_color || "白", (e) => {
         selectedItems[item].rust_color = e.target.value;
       });
       controls.appendChild(buildControlField("色", rustSelect));
     } else if (isSkColorItem(item)) {
-      const fixedWeight = createInput("text", "15kg", "", () => {});
-      fixedWeight.disabled = true;
+      const fixedWeight = createInput("text", "15kg", "", () => {}, true);
       controls.appendChild(buildControlField("容量", fixedWeight));
 
       const skSelect = createSelect(SK_MIRACLE_COLORS, data.sk_color || "クリヤー", (e) => {
@@ -522,21 +547,6 @@ function resetAll() {
   render();
 }
 
-function collapseEmpty() {
-  const sections = document.querySelectorAll(".maker-section");
-  sections.forEach(section => {
-    const countText = section.querySelector(".maker-count")?.textContent || "0/0";
-    const [selected] = countText.split("/").map(v => parseInt(v, 10) || 0);
-    section.style.display = selected > 0 ? "block" : "none";
-  });
-}
-
-function expandAll() {
-  document.querySelectorAll(".maker-section").forEach(section => {
-    section.style.display = "block";
-  });
-}
-
 STAFF_NAMES.forEach(name => {
   const option = document.createElement("option");
   option.value = name;
@@ -564,18 +574,6 @@ searchInput.addEventListener("input", render);
 clearSearchBtn.addEventListener("click", () => {
   searchInput.value = "";
   render();
-});
-
-expandAllBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  render();
-  expandAll();
-});
-
-collapseEmptyBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  render();
-  collapseEmpty();
 });
 
 copyBtn.addEventListener("click", copyResult);
