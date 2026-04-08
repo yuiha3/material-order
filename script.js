@@ -93,8 +93,8 @@ const SK_COLOR_ITEMS = new Set(["水性ミラクシーラーエコ"]);
 const KENACE_FIXED_ITEMS = new Set(["水性ケンエース"]);
 const KENACE_GLOSS_ITEMS = new Set(["水性ケンエースグロス"]);
 
-const STAFF_NAMES = ["山下", "藤ノ木", "高崎"];
-let selectedStaffName = "山下";
+const STAFF_NAMES = ["高崎", "上田", "石澤", "栗原", "齊藤", "ウンス", "滝本", "山下", "藤ノ木", "福王寺", "大浦"];
+let selectedStaffName = "藤ノ木";
 
 const PLACEHOLDER_TEXT = "(選択した材料がここに表示されます)";
 const TAB_CONFIG = {
@@ -116,8 +116,6 @@ const searchInput = document.getElementById("searchInput");
 const copyBtn = document.getElementById("copyBtn");
 const resetBtn = document.getElementById("resetBtn");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
-const expandAllBtn = document.getElementById("expandAllBtn");
-const collapseEmptyBtn = document.getElementById("collapseEmptyBtn");
 const staffSelect = document.getElementById("staffSelect");
 const tabButtons = document.querySelectorAll(".tab-btn");
 
@@ -510,21 +508,6 @@ function resetAll() {
   render();
 }
 
-function collapseEmpty() {
-  const sections = document.querySelectorAll(".maker-section");
-  sections.forEach(section => {
-    const countText = section.querySelector(".maker-count")?.textContent || "0/0";
-    const [selected] = countText.split("/").map(v => parseInt(v, 10) || 0);
-    section.style.display = selected > 0 ? "block" : "none";
-  });
-}
-
-function expandAll() {
-  document.querySelectorAll(".maker-section").forEach(section => {
-    section.style.display = "block";
-  });
-}
-
 STAFF_NAMES.forEach(name => {
   const option = document.createElement("option");
   option.value = name;
@@ -554,18 +537,6 @@ resetBtn.addEventListener("click", resetAll);
 clearSearchBtn.addEventListener("click", () => {
   searchInput.value = "";
   render();
-});
-
-expandAllBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  render();
-  expandAll();
-});
-
-collapseEmptyBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  render();
-  collapseEmpty();
 });
 
 resultText.value = PLACEHOLDER_TEXT;
