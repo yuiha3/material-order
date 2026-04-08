@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>材料発注</title>
+  <title>発注リスト作成</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -11,23 +11,29 @@
     <section class="panel left-panel">
       <div class="hero">
         <div>
-          <h1>材料発注</h1>
-          <p>材料を選ぶだけで、発注文面を自動で整形します。スマホでもPCでも使いやすい、シンプルで見やすい発注支援アプリです。</p>
+          <h1>材料発注テキスト作成</h1>
+          <p>材料を選ぶだけで、発注文面を自動で整形します。スマホでもPCでも使いやすい発注支援アプリです。</p>
         </div>
+        <div class="badge">レスポンシブ対応</div>
       </div>
 
       <div class="toolbar">
-        <div class="search-wrap">
+        <div class="search-area">
           <div class="search-box">
             <input id="searchInput" type="text" placeholder="材料名・メーカー名で検索" />
             <span class="search-icon">⌕</span>
           </div>
           <button id="clearSearchBtn" class="ghost-btn search-clear-btn" type="button">検索クリア</button>
         </div>
+
+        <button id="expandAllBtn" class="ghost-btn" type="button">すべて表示</button>
+        <button id="collapseEmptyBtn" class="ghost-btn" type="button">未選択を整理</button>
       </div>
 
       <div class="summary-strip">
         <div class="summary-chip">選択数: <strong id="selectedCount">0</strong></div>
+        <div class="summary-chip">メーカー数: <strong id="makerCount">0</strong></div>
+        <div class="summary-chip">即コピー対応</div>
       </div>
 
       <div class="tabs">
@@ -42,7 +48,7 @@
 
     <aside class="panel right-panel">
       <h2>発注テキスト</h2>
-      <p>選択内容に応じて、メーカーごとにまとめた文章を自動生成します。必要ならそのまま少し手直しして使えます。</p>
+      <p>選択内容に応じて、メーカーごとにまとめた文章を自動生成します。</p>
 
       <div class="preview">
         <div class="field staff-field">
@@ -63,7 +69,7 @@
         </div>
 
         <div class="helper">
-          使い方：材料をタップして選択 → 数量や仕様を調整 → 右側のテキストをコピー。スマホでは右側パネルが下に回り込むので、そのまま下へスクロールして使えます。
+          材料を選択 → 数量や仕様を調整 → 右側の発注文をコピーして使えます。
         </div>
       </div>
     </aside>
