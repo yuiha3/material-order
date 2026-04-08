@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>発注リスト作成</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <section class="panel left-panel">
+      <div class="hero">
+        <div>
+          <h1>材料発注テキスト作成</h1>
+          <p>材料を選ぶだけで、発注文面を自動で整形します。スマホでもPCでも使いやすい、シンプルで見やすい発注支援アプリです。</p>
+        </div>
+        <div class="badge">レスポンシブ対応</div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-box">
+          <input id="searchInput" type="text" placeholder="材料名・メーカー名で検索" />
+          <span class="search-icon">⌕</span>
+        </div>
+        <button id="expandAllBtn" class="ghost-btn" type="button">すべて表示</button>
+        <button id="collapseEmptyBtn" class="ghost-btn" type="button">未選択を整理</button>
+      </div>
+
+      <div class="summary-strip">
+        <div class="summary-chip">選択数: <strong id="selectedCount">0</strong></div>
+        <div class="summary-chip">メーカー数: <strong id="makerCount">0</strong></div>
+        <div class="summary-chip">即コピー対応</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" type="button" data-tab="資材">資材</button>
+        <button class="tab-btn" type="button" data-tab="塗装">塗装</button>
+        <button class="tab-btn" type="button" data-tab="シール">シール</button>
+        <button class="tab-btn" type="button" data-tab="防水">防水</button>
+      </div>
+
+      <div id="makersContainer" class="makers"></div>
+    </section>
+
+    <aside class="panel right-panel">
+      <h2>発注テキスト</h2>
+      <p>選択内容に応じて、メーカーごとにまとめた文章を自動生成します。必要ならそのまま少し手直しして使えます。</p>
+
+      <div class="preview">
+        <div class="field staff-field">
+          <label for="staffSelect">担当者名</label>
+          <select id="staffSelect"></select>
+        </div>
+
+        <div class="preview-head">
+          <div class="preview-title">PREVIEW</div>
+          <div class="preview-meta" id="previewMeta">未選択</div>
+        </div>
+
+        <textarea id="resultText" readonly></textarea>
+
+        <div class="actions">
+          <button id="copyBtn" class="primary-btn" type="button">コピー</button>
+          <button id="resetBtn" class="ghost-btn" type="button">リセット</button>
+          <button id="clearSearchBtn" class="danger-btn" type="button">検索クリア</button>
+        </div>
+
+        <div class="helper">
+          使い方：材料をタップして選択 → 数量や仕様を調整 → 右側のテキストをコピー。スマホでは右側パネルが下に回り込むので、そのまま下へスクロールして使えます。
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
