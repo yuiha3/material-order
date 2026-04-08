@@ -110,7 +110,6 @@ const selectedItems = {};
 const makersContainer = document.getElementById("makersContainer");
 const resultText = document.getElementById("resultText");
 const selectedCountEl = document.getElementById("selectedCount");
-const makerCountEl = document.getElementById("makerCount");
 const previewMeta = document.getElementById("previewMeta");
 const searchInput = document.getElementById("searchInput");
 const copyBtn = document.getElementById("copyBtn");
@@ -312,7 +311,6 @@ function updatePreview() {
   ).size;
 
   selectedCountEl.textContent = String(count);
-  makerCountEl.textContent = String(selectedMakerCount);
 
   if (!ordered.length) {
     resultText.value = PLACEHOLDER_TEXT;
@@ -362,6 +360,9 @@ function buildItemCard(maker, item) {
     controls.className = "controls";
     const data = selectedItems[item];
 
+    const qtyUnitRow = document.createElement("div");
+    qtyUnitRow.className = "qty-unit-row";
+
     const qtyInput = createInput("number", data.qty || "1", "数量", (e) => {
       selectedItems[item].qty = e.target.value.replace(/[^0-9]/g, "");
       e.target.value = selectedItems[item].qty;
@@ -369,13 +370,14 @@ function buildItemCard(maker, item) {
     });
     qtyInput.min = "0";
     qtyInput.inputMode = "numeric";
-    controls.appendChild(buildControlField("数量", qtyInput));
+    qtyUnitRow.appendChild(buildControlField("数量", qtyInput));
 
     const unitSelect = createSelect(UNITS, data.unit, (e) => {
       selectedItems[item].unit = e.target.value;
       updatePreview();
     });
-    controls.appendChild(buildControlField("単位", unitSelect));
+    qtyUnitRow.appendChild(buildControlField("単位", unitSelect));
+    controls.appendChild(qtyUnitRow);
 
     if (isAnySizeColorSheenItem(item)) {
       const sizeSelect = createSelect(SIZES, data.size || "16kg", (e) => {
