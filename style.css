@@ -51,13 +51,13 @@ body {
   border-radius: var(--radius-xl);
 }
 
-.left-panel {
+.left-panel,
+.right-panel {
   padding: 18px;
   min-width: 0;
 }
 
 .right-panel {
-  padding: 18px;
   position: sticky;
   top: 16px;
 }
@@ -74,7 +74,6 @@ body {
   margin: 0;
   font-size: clamp(1.45rem, 2vw, 1.95rem);
   line-height: 1.2;
-  letter-spacing: 0.02em;
 }
 
 .hero p {
@@ -97,20 +96,16 @@ body {
 }
 
 .toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: start;
   margin-bottom: 16px;
 }
 
-.search-wrap {
-  display: flex;
-  flex-direction: column;
+.search-area {
+  display: grid;
   gap: 8px;
-}
-
-.search-clear-btn {
-  height: 38px;
-  font-size: 0.88rem;
-  align-self: flex-start;
-  padding: 0 14px;
 }
 
 .search-box {
@@ -147,9 +142,12 @@ body {
   font-size: 1rem;
 }
 
+.search-clear-btn {
+  justify-self: start;
+}
+
 .ghost-btn,
 .primary-btn,
-.danger-btn,
 .tab-btn {
   height: 48px;
   border: none;
@@ -163,7 +161,6 @@ body {
 
 .ghost-btn:hover,
 .primary-btn:hover,
-.danger-btn:hover,
 .tab-btn:hover {
   transform: translateY(-1px);
 }
@@ -182,12 +179,6 @@ body {
 
 .primary-btn.success {
   background: linear-gradient(135deg, #1ca66d, #1f8f6a);
-}
-
-.danger-btn {
-  background: linear-gradient(135deg, var(--danger), var(--danger-dark));
-  color: white;
-  box-shadow: 0 10px 22px rgba(210, 79, 69, 0.16);
 }
 
 .summary-strip {
@@ -253,7 +244,6 @@ body {
 .maker-title {
   font-size: 1rem;
   font-weight: 800;
-  letter-spacing: 0.01em;
 }
 
 .maker-count {
@@ -336,24 +326,21 @@ body {
 
 .controls {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px dashed #dbe7e4;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.qty-unit-row {
-  display: flex;
+.inline-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
-  grid-column: 1 / -1;
+  grid-column: span 2;
 }
 
-.qty-unit-row .field {
-  flex: 1;
-}
-
-
+.field {
   display: grid;
   gap: 6px;
   min-width: 0;
@@ -363,7 +350,6 @@ body {
   font-size: 0.75rem;
   color: var(--muted);
   font-weight: 700;
-  letter-spacing: 0.02em;
 }
 
 .field input,
@@ -416,7 +402,6 @@ body {
   font-size: 0.86rem;
   font-weight: 800;
   color: var(--muted);
-  letter-spacing: 0.05em;
 }
 
 .preview-meta {
@@ -492,6 +477,10 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .inline-pair {
+    grid-column: span 2;
+  }
+
   .actions {
     grid-template-columns: 1fr;
   }
@@ -516,6 +505,11 @@ textarea {
 
   .controls {
     grid-template-columns: 1fr;
+  }
+
+  .inline-pair {
+    grid-template-columns: 1fr 1fr;
+    grid-column: span 1;
   }
 
   .summary-strip {
