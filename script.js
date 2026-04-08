@@ -228,7 +228,7 @@ function buildOrderLines() {
       const data = selectedItems[item];
       const parts = [item];
 
-      if (isAnySizeColorSheenItem(item)) {
+      if (isAnySizeColorSheenItem(item) || isFixed16kgItem(item)) {
         if (data.size) parts.push(data.size);
         if (data.color) parts.push(`色番:${data.color}`);
         if (data.sheen) parts.push(data.sheen);
@@ -274,7 +274,7 @@ function ensureSelectedDefaults(maker, item) {
       unit: defaultUnitForMaker(maker),
     };
 
-    if (isAnySizeColorSheenItem(item)) {
+    if (isAnySizeColorSheenItem(item) || isFixed16kgItem(item)) {
       selectedItems[item].size = "16kg";
       selectedItems[item].color = defaultColorForItem(item);
       selectedItems[item].sheen = defaultSheenForItem(item);
@@ -391,32 +391,36 @@ function buildItemCard(maker, item) {
     controls.className = "controls";
     const data = selectedItems[item];
 
-    const topInline = document.createElement("div");
-    topInline.className = "inline-triple";
-
     const isFixedPaint16kg = isFixed16kgItem(item);
+    const hasSizeColorSheen = isAnySizeColorSheenItem(item);
 
-    const sizeControl = isFixedPaint16kg
-      ? createInput("text", "16kg", "", () => {}, true)
-      : createSelect(SIZES, data.size || "16kg", (e) => {
+    // 1列目: 容量・数量・単位
+    if (hasSizeColorSheen || isRustItem(item) || isFixedPaint16kg) {
+      const topInline = document.createElement("div");
+      topInline.className = "inline-triple";
+
+      let sizeControl;
+
+      if (isFixedPaint16kg) {
+        sizeControl = createInput("text", "16kg", "", () => {}, true);
+        selectedItems[item].size = "16kg";
+      } else if (hasSizeColorSheen || isRustItem(item)) {
+        sizeControl = createSelect(SIZES, data.size || "16kg", (e) => {
           selectedItems[item].size = e.target.value;
         });
+      }
 
-    const qtyInput = createInput("number", data.qty || "1", "数量", (e) => {
-      selectedItems[item].qty = e.target.value.replace(/[^0-9]/g, "");
-      e.target.value = selectedItems[item].qty;
-    });
-    qtyInput.min = "0";
-    qtyInput.inputMode = "numeric";
+      const qtyInput = createInput("number", data.qty || "1", "数量", (e) => {
+        selectedItems[item].qty = e.target.value.replace(/[^0-9]/g, "");
+        e.target.value = selectedItems[item].qty;
+      });
+      qtyInput.min = "0";
+      qtyInput.inputMode = "numeric";
 
-    const unitSelect = createSelect(UNITS, data.unit, (e) => {
-      selectedItems[item].unit = e.target.value;
-    });
+      const unitSelect = createSelect(UNITS, data.unit, (e) => {
+        selectedItems[item].unit = e.target.value;
+      });
 
-    if (
-      isAnySizeColorSheenItem(item) ||
-      isRustItem(item)
-    ) {
       topInline.appendChild(buildControlField("容量", sizeControl));
       topInline.appendChild(buildControlField("数量", qtyInput));
       topInline.appendChild(buildControlField("単位", unitSelect));
@@ -424,12 +428,25 @@ function buildItemCard(maker, item) {
     } else {
       const qtyUnitInline = document.createElement("div");
       qtyUnitInline.className = "inline-pair";
+
+      const qtyInput = createInput("number", data.qty || "1", "数量", (e) => {
+        selectedItems[item].qty = e.target.value.replace(/[^0-9]/g, "");
+        e.target.value = selectedItems[item].qty;
+      });
+      qtyInput.min = "0";
+      qtyInput.inputMode = "numeric";
+
+      const unitSelect = createSelect(UNITS, data.unit, (e) => {
+        selectedItems[item].unit = e.target.value;
+      });
+
       qtyUnitInline.appendChild(buildControlField("数量", qtyInput));
       qtyUnitInline.appendChild(buildControlField("単位", unitSelect));
       controls.appendChild(qtyUnitInline);
     }
 
-    if (isAnySizeColorSheenItem(item)) {
+    // 2列目: 色番・艶
+    if (hasSizeColorSheen || isFixedPaint16kg) {
       const colorSheenInline = document.createElement("div");
       colorSheenInline.className = "inline-pair";
 
@@ -468,7 +485,6 @@ function buildItemCard(maker, item) {
 
   return card;
 }
-
 function render() {
   const keyword = searchInput.value.trim().toLowerCase();
   makersContainer.innerHTML = "";
