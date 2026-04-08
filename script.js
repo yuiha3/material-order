@@ -209,7 +209,7 @@ function refreshPreview() {
 
   if (!ordered.length) {
     resultText.value = PLACEHOLDER_TEXT;
-    previewMeta.textContent = "未選択";
+    previewMeta.textContent = "";
   } else {
     resultText.value = `${getHeaderText()}\n\n${ordered.join("\n")}`;
     previewMeta.textContent = `${count}件選択中`;
