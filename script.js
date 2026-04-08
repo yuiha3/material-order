@@ -123,6 +123,7 @@ const resetBtn = document.getElementById("resetBtn");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
 const staffSelect = document.getElementById("staffSelect");
 const tabButtons = document.querySelectorAll(".tab-btn");
+const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
 
 function getHeaderText() {
   return `お世話になります。
@@ -575,6 +576,30 @@ clearSearchBtn.addEventListener("click", () => {
   searchInput.value = "";
   render();
 });
+
+function updateScrollButtonVisibility() {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const windowHeight = window.innerHeight;
+  const fullHeight = document.documentElement.scrollHeight;
+
+  if (scrollTop + windowHeight >= fullHeight - 80) {
+    scrollToBottomBtn.classList.add("hidden");
+  } else {
+    scrollToBottomBtn.classList.remove("hidden");
+  }
+}
+
+scrollToBottomBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: "smooth"
+  });
+});
+
+window.addEventListener("scroll", updateScrollButtonVisibility);
+window.addEventListener("resize", updateScrollButtonVisibility);
+
+updateScrollButtonVisibility();
 
 copyBtn.addEventListener("click", copyResult);
 resetBtn.addEventListener("click", resetAll);
