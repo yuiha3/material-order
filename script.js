@@ -93,9 +93,7 @@ const SK_COLOR_ITEMS = new Set(["水性ミラクシーラーエコ"]);
 const KENACE_FIXED_ITEMS = new Set(["水性ケンエース"]);
 const KENACE_GLOSS_ITEMS = new Set(["水性ケンエースグロス"]);
 
-const STAFF_NAMES = ["高崎", "上田", "石澤", "栗原", "齊藤", "ウンス", "滝本", "山下", "藤ノ木", "福王寺", "大浦"];
-let selectedStaffName = "藤ノ木";
-
+const STAFF_NAMES = ["山下", "藤ノ木", "高崎"];
 const PLACEHOLDER_TEXT = "(選択した材料がここに表示されます)";
 const TAB_CONFIG = {
   "資材": ["ダイヤテックス", "Nitto", "カモ井", "スコッチ", "大塚刷毛(マスカー・容器)", "大塚刷毛(ローラー)"],
@@ -104,17 +102,21 @@ const TAB_CONFIG = {
   "防水": [],
 };
 
+let selectedStaffName = "山下";
 let activeTab = "資材";
 const selectedItems = {};
 
 const makersContainer = document.getElementById("makersContainer");
 const resultText = document.getElementById("resultText");
 const selectedCountEl = document.getElementById("selectedCount");
+const makerCountEl = document.getElementById("makerCount");
 const previewMeta = document.getElementById("previewMeta");
 const searchInput = document.getElementById("searchInput");
 const copyBtn = document.getElementById("copyBtn");
 const resetBtn = document.getElementById("resetBtn");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
+const expandAllBtn = document.getElementById("expandAllBtn");
+const collapseEmptyBtn = document.getElementById("collapseEmptyBtn");
 const staffSelect = document.getElementById("staffSelect");
 const tabButtons = document.querySelectorAll(".tab-btn");
 
@@ -184,70 +186,25 @@ function getDisplayMakerName(maker) {
   return DISPLAY_MAKER_NAMES[maker] || maker;
 }
 
-function createSelect(options, value, onChange) {
-  const select = document.createElement("select");
-  options.forEach(optionValue => {
-    const option = document.createElement("option");
-    option.value = optionValue;
-    option.textContent = optionValue;
-    if (optionValue === value) option.selected = true;
-    select.appendChild(option);
-  });
-  select.addEventListener("change", onChange);
-  return select;
-}
+function refreshPreview() {
+  const ordered = buildOrderLines();
+  const count = Object.keys(selectedItems).length;
+  const selectedMakerCount = new Set(
+    Object.entries(MATERIALS)
+      .filter(([, items]) => items.some(item => selectedItems[item]))
+      .map(([maker]) => getDisplayMakerName(maker))
+  ).size;
 
-function createInput(type, value, placeholder, onInput) {
-  const input = document.createElement("input");
-  input.type = type;
-  input.value = value;
-  input.placeholder = placeholder;
-  input.addEventListener("input", onInput);
-  return input;
-}
+  selectedCountEl.textContent = String(count);
+  makerCountEl.textContent = String(selectedMakerCount);
 
-function ensureSelectedDefaults(maker, item) {
-  if (!selectedItems[item]) {
-    selectedItems[item] = {
-      qty: "1",
-      unit: defaultUnitForMaker(maker),
-    };
-
-    if (isAnySizeColorSheenItem(item)) {
-      selectedItems[item].size = "16kg";
-      selectedItems[item].color = defaultColorForItem(item);
-      selectedItems[item].sheen = defaultSheenForItem(item);
-    }
-
-    if (isRustItem(item)) {
-      selectedItems[item].size = "16kg";
-      selectedItems[item].rust_color = "白";
-    }
-
-    if (isSkColorItem(item)) {
-      selectedItems[item].sk_color = "クリヤー";
-    }
-  }
-}
-
-function toggleItemSelection(maker, item) {
-  if (selectedItems[item]) {
-    delete selectedItems[item];
+  if (!ordered.length) {
+    resultText.value = PLACEHOLDER_TEXT;
+    previewMeta.textContent = "未選択";
   } else {
-    ensureSelectedDefaults(maker, item);
+    resultText.value = `${getHeaderText()}\n\n${ordered.join("\n")}`;
+    previewMeta.textContent = `${count}件選択中`;
   }
-  render();
-}
-
-function buildControlField(labelText, control) {
-  const wrap = document.createElement("div");
-  wrap.className = "field";
-
-  const label = document.createElement("label");
-  label.textContent = labelText;
-  wrap.appendChild(label);
-  wrap.appendChild(control);
-  return wrap;
 }
 
 function buildOrderLines() {
@@ -301,24 +258,84 @@ function buildOrderLines() {
   return ordered;
 }
 
-function updatePreview() {
-  const ordered = buildOrderLines();
-  const count = Object.keys(selectedItems).length;
-  const selectedMakerCount = new Set(
-    Object.entries(MATERIALS)
-      .filter(([, items]) => items.some(item => selectedItems[item]))
-      .map(([maker]) => getDisplayMakerName(maker))
-  ).size;
+function ensureSelectedDefaults(maker, item) {
+  if (!selectedItems[item]) {
+    selectedItems[item] = {
+      qty: "1",
+      unit: defaultUnitForMaker(maker),
+    };
 
-  selectedCountEl.textContent = String(count);
+    if (isAnySizeColorSheenItem(item)) {
+      selectedItems[item].size = "16kg";
+      selectedItems[item].color = defaultColorForItem(item);
+      selectedItems[item].sheen = defaultSheenForItem(item);
+    }
 
-  if (!ordered.length) {
-    resultText.value = PLACEHOLDER_TEXT;
-    previewMeta.textContent = "未選択";
-  } else {
-    resultText.value = `${getHeaderText()}\n\n${ordered.join("\n")}`;
-    previewMeta.textContent = `${count}件選択中`;
+    if (isRustItem(item)) {
+      selectedItems[item].size = "16kg";
+      selectedItems[item].rust_color = "白";
+    }
+
+    if (isSkColorItem(item)) {
+      selectedItems[item].sk_color = "クリヤー";
+    }
   }
+}
+
+function createSelect(options, value, onChange) {
+  const select = document.createElement("select");
+  options.forEach(optionValue => {
+    const option = document.createElement("option");
+    option.value = optionValue;
+    option.textContent = optionValue;
+    if (optionValue === value) option.selected = true;
+    select.appendChild(option);
+  });
+
+  select.addEventListener("change", (e) => {
+    e.stopPropagation();
+    onChange(e);
+    refreshPreview();
+  });
+
+  select.addEventListener("click", e => e.stopPropagation());
+  return select;
+}
+
+function createInput(type, value, placeholder, onInput) {
+  const input = document.createElement("input");
+  input.type = type;
+  input.value = value;
+  input.placeholder = placeholder;
+
+  input.addEventListener("input", (e) => {
+    e.stopPropagation();
+    onInput(e);
+    refreshPreview();
+  });
+
+  input.addEventListener("click", e => e.stopPropagation());
+  return input;
+}
+
+function buildControlField(labelText, control) {
+  const wrap = document.createElement("div");
+  wrap.className = "field";
+
+  const label = document.createElement("label");
+  label.textContent = labelText;
+  wrap.appendChild(label);
+  wrap.appendChild(control);
+  return wrap;
+}
+
+function toggleItemSelection(maker, item) {
+  if (selectedItems[item]) {
+    delete selectedItems[item];
+  } else {
+    ensureSelectedDefaults(maker, item);
+  }
+  render();
 }
 
 function buildItemCard(maker, item) {
@@ -331,7 +348,9 @@ function buildItemCard(maker, item) {
 
   const toggle = document.createElement("div");
   toggle.className = "select-toggle";
-  toggle.addEventListener("click", () => toggleItemSelection(maker, item));
+  toggle.addEventListener("click", () => {
+    toggleItemSelection(maker, item);
+  });
 
   const check = document.createElement("div");
   check.className = "check";
@@ -360,35 +379,32 @@ function buildItemCard(maker, item) {
     controls.className = "controls";
     const data = selectedItems[item];
 
-    const qtyUnitRow = document.createElement("div");
-    qtyUnitRow.className = "qty-unit-row";
+    const inlinePair = document.createElement("div");
+    inlinePair.className = "inline-pair";
 
     const qtyInput = createInput("number", data.qty || "1", "数量", (e) => {
       selectedItems[item].qty = e.target.value.replace(/[^0-9]/g, "");
       e.target.value = selectedItems[item].qty;
-      updatePreview();
     });
     qtyInput.min = "0";
     qtyInput.inputMode = "numeric";
-    qtyUnitRow.appendChild(buildControlField("数量", qtyInput));
 
     const unitSelect = createSelect(UNITS, data.unit, (e) => {
       selectedItems[item].unit = e.target.value;
-      updatePreview();
     });
-    qtyUnitRow.appendChild(buildControlField("単位", unitSelect));
-    controls.appendChild(qtyUnitRow);
+
+    inlinePair.appendChild(buildControlField("数量", qtyInput));
+    inlinePair.appendChild(buildControlField("単位", unitSelect));
+    controls.appendChild(inlinePair);
 
     if (isAnySizeColorSheenItem(item)) {
       const sizeSelect = createSelect(SIZES, data.size || "16kg", (e) => {
         selectedItems[item].size = e.target.value;
-        updatePreview();
       });
       controls.appendChild(buildControlField("容量", sizeSelect));
 
       const colorInput = createInput("text", data.color || "", "色番", (e) => {
         selectedItems[item].color = e.target.value.trim();
-        updatePreview();
       });
       controls.appendChild(buildControlField("色番", colorInput));
 
@@ -397,20 +413,17 @@ function buildItemCard(maker, item) {
         data.sheen || defaultSheenForItem(item),
         (e) => {
           selectedItems[item].sheen = e.target.value;
-          updatePreview();
         }
       );
       controls.appendChild(buildControlField("艶", sheenSelect));
     } else if (isRustItem(item)) {
       const sizeSelect = createSelect(SIZES, data.size || "16kg", (e) => {
         selectedItems[item].size = e.target.value;
-        updatePreview();
       });
       controls.appendChild(buildControlField("容量", sizeSelect));
 
       const rustSelect = createSelect(ZAURUS_COLORS, data.rust_color || "白", (e) => {
         selectedItems[item].rust_color = e.target.value;
-        updatePreview();
       });
       controls.appendChild(buildControlField("色", rustSelect));
     } else if (isSkColorItem(item)) {
@@ -420,7 +433,6 @@ function buildItemCard(maker, item) {
 
       const skSelect = createSelect(SK_MIRACLE_COLORS, data.sk_color || "クリヤー", (e) => {
         selectedItems[item].sk_color = e.target.value;
-        updatePreview();
       });
       controls.appendChild(buildControlField("色", skSelect));
     }
@@ -482,7 +494,7 @@ function render() {
     makersContainer.appendChild(empty);
   }
 
-  updatePreview();
+  refreshPreview();
 }
 
 async function copyResult() {
@@ -498,7 +510,7 @@ async function copyResult() {
       copyBtn.textContent = original;
       copyBtn.classList.remove("success");
     }, 1400);
-  } catch (error) {
+  } catch {
     resultText.focus();
     resultText.select();
     document.execCommand("copy");
@@ -508,6 +520,21 @@ async function copyResult() {
 function resetAll() {
   Object.keys(selectedItems).forEach(key => delete selectedItems[key]);
   render();
+}
+
+function collapseEmpty() {
+  const sections = document.querySelectorAll(".maker-section");
+  sections.forEach(section => {
+    const countText = section.querySelector(".maker-count")?.textContent || "0/0";
+    const [selected] = countText.split("/").map(v => parseInt(v, 10) || 0);
+    section.style.display = selected > 0 ? "block" : "none";
+  });
+}
+
+function expandAll() {
+  document.querySelectorAll(".maker-section").forEach(section => {
+    section.style.display = "block";
+  });
 }
 
 STAFF_NAMES.forEach(name => {
@@ -520,7 +547,7 @@ STAFF_NAMES.forEach(name => {
 
 staffSelect.addEventListener("change", (e) => {
   selectedStaffName = e.target.value;
-  updatePreview();
+  refreshPreview();
 });
 
 tabButtons.forEach(btn => {
@@ -533,13 +560,26 @@ tabButtons.forEach(btn => {
 });
 
 searchInput.addEventListener("input", render);
-copyBtn.addEventListener("click", copyResult);
-resetBtn.addEventListener("click", resetAll);
 
 clearSearchBtn.addEventListener("click", () => {
   searchInput.value = "";
   render();
 });
+
+expandAllBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  render();
+  expandAll();
+});
+
+collapseEmptyBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  render();
+  collapseEmpty();
+});
+
+copyBtn.addEventListener("click", copyResult);
+resetBtn.addEventListener("click", resetAll);
 
 resultText.value = PLACEHOLDER_TEXT;
 render();
