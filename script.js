@@ -411,6 +411,23 @@ const paints = [
   },
   {
     category: "塗装",
+    manufacturer: "関西ペイント",
+    name: "ザウルスEX II",
+    capacityOptions: ["16kg", "4kg"],
+    defaultCapacity: "16kg",
+    quantity: 1,
+    unitOptions: ["缶"],
+    defaultUnit: "缶",
+    colorMode: "name",
+    colorNameOptions: ["白", "グレー", "赤さび", "黒さび"],
+    defaultColorName: "白",
+    colorCodeEnabled: false,
+    defaultColorCode: "",
+    glossOptions: [],
+    defaultGloss: ""
+  },
+  {
+    category: "塗装",
     manufacturer: "エスケー化研",
     name: "水性ミラクシーラーエコ",
     capacityOptions: ["15kg"],
@@ -482,12 +499,12 @@ const paints = [
 const sealants = [];
 const waterproofs = [];
 
-const STAFF_NAMES = ["山下", "藤ノ木", "高崎"];
+const STAFF_NAMES = ["高崎", "上田", "石澤", "栗原", "齊藤", "ウンス", "滝本", "山下", "藤ノ木", "福王寺", "大浦"];
 const PLACEHOLDER_TEXT = "(選択した材料がここに表示されます)";
 
 const appState = {
   activeTab: "資材",
-  selectedStaffName: "山下",
+  selectedStaffName: "藤ノ木",
   selectedItems: {}
 };
 
