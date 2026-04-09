@@ -844,6 +844,19 @@ function buildOrderLines() {
   return lines;
 }
 
+function refreshPreview() {
+  const ordered = buildOrderLines();
+  const count = Object.keys(appState.selectedItems).length;
+
+  selectedCountEl.textContent = String(count);
+
+  if (!ordered.length) {
+    resultText.value = PLACEHOLDER_TEXT;
+  } else {
+    resultText.value = `${getHeaderText()}\n\n${ordered.join("\n")}`;
+  }
+}
+
 function render() {
   const items = getItemsByTab(appState.activeTab);
   const keyword = searchInput.value.trim().toLowerCase();
