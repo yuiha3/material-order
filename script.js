@@ -846,9 +846,6 @@ function buildOrderLines() {
 
 function refreshPreview() {
   const ordered = buildOrderLines();
-  const count = Object.keys(appState.selectedItems).length;
-
-  selectedCountEl.textContent = String(count);
 
   if (!ordered.length) {
     resultText.value = PLACEHOLDER_TEXT;
