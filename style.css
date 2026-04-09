@@ -166,20 +166,15 @@ body {
   background: linear-gradient(135deg, #1ca66d, #1f8f6a);
 }
 
-.summary-strip {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.summary-chip {
-  background: #f9fcfb;
-  border: 1px solid var(--line);
+.supplier-information {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #faf5f7;
+  border: 1px solid #eddee6;
+  border-radius: 14px;
   color: var(--muted);
-  border-radius: 999px;
-  padding: 8px 12px;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
 }
 
 .tabs {
