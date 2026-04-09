@@ -398,15 +398,6 @@ body {
   color: var(--muted);
 }
 
-.preview-meta {
-  font-size: 0.8rem;
-  color: var(--muted);
-  background: #f1f8f5;
-  border: 1px solid #dbece5;
-  padding: 6px 10px;
-  border-radius: 999px;
-}
-
 textarea {
   width: 100%;
   min-height: 380px;
