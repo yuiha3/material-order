@@ -510,8 +510,6 @@ const appState = {
 
 const makersContainer = document.getElementById("makersContainer");
 const resultText = document.getElementById("resultText");
-const selectedCountEl = document.getElementById("selectedCount");
-const previewMeta = document.getElementById("previewMeta");
 const searchInput = document.getElementById("searchInput");
 const copyBtn = document.getElementById("copyBtn");
 const resetBtn = document.getElementById("resetBtn");
@@ -844,21 +842,6 @@ function buildOrderLines() {
   }
 
   return lines;
-}
-
-function refreshPreview() {
-  const ordered = buildOrderLines();
-  const count = Object.keys(appState.selectedItems).length;
-
-  selectedCountEl.textContent = String(count);
-
-  if (!ordered.length) {
-    resultText.value = PLACEHOLDER_TEXT;
-    previewMeta.textContent = "未選択";
-  } else {
-    resultText.value = `${getHeaderText()}\n\n${ordered.join("\n")}`;
-    previewMeta.textContent = `${count}件選択中`;
-  }
 }
 
 function render() {
