@@ -4,7 +4,7 @@ const supplies = [
     manufacturer: "ダイヤテックス",
     name: "パイオランテープ50mm x 25m",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -12,7 +12,7 @@ const supplies = [
     manufacturer: "Nitto",
     name: "ニトクロステープ茶色No.7503  30mm x 25m",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -20,7 +20,7 @@ const supplies = [
     manufacturer: "カモ井",
     name: "ルパン(24mm)",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "パック"],
     defaultUnit: "箱"
   },
   {
@@ -28,7 +28,7 @@ const supplies = [
     manufacturer: "カモ井",
     name: "ルパンクーペ(24mm)",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "パック"],
     defaultUnit: "箱"
   },
   {
@@ -36,7 +36,7 @@ const supplies = [
     manufacturer: "カモ井",
     name: "グレートサスケ(24mm)",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "パック"],
     defaultUnit: "箱"
   },
   {
@@ -44,7 +44,7 @@ const supplies = [
     manufacturer: "カモ井",
     name: "SR-100 シリコーンテープ(18mm)",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "パック"],
     defaultUnit: "箱"
   },
   {
@@ -52,7 +52,7 @@ const supplies = [
     manufacturer: "スコッチ",
     name: "マスキングテープ 99BB",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "パック"],
     defaultUnit: "箱"
   },
   {
@@ -60,7 +60,7 @@ const supplies = [
     manufacturer: "スコッチ",
     name: "マスキングテープ 80S",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "パック"],
     defaultUnit: "箱"
   },
   {
@@ -68,7 +68,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "コロナマスカー(ミニタイプ25m) 300mm",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -76,7 +76,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "コロナマスカー(ミニタイプ25m) 550mm",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -84,7 +84,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "コロナマスカー(ミニタイプ25m) 1100mm",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -92,7 +92,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "さげっと用 内容器凹凸",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -100,7 +100,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "タッチアップセパレート容器 ハーフ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -108,7 +108,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "タッチアップセパレート容器 クォーター",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -116,7 +116,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "一斗缶内容器",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -124,7 +124,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "ローラーバケットSXタイプ内容器",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -132,15 +132,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "らくらくカートリッジ1型",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
-    defaultUnit: "箱"
-  },
-  {
-    category: "資材",
-    manufacturer: "大塚刷毛",
-    name: "らくらくカートリッジ2型",
-    quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -148,7 +140,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "らくらくカートリッジ3型",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱"],
     defaultUnit: "箱"
   },
   {
@@ -156,7 +148,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "豚毛金巻 8号",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -164,7 +156,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "BKラスターN短柄 1.5インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -172,7 +164,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "BKラスターN短柄 2インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -180,15 +172,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "BKラスターN短柄 2.5インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
-    defaultUnit: "箱"
-  },
-  {
-    category: "資材",
-    manufacturer: "大塚刷毛",
-    name: "BKラスターN短柄 3インチ",
-    quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -196,7 +180,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "スカーレットEX(25mm) 6インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -204,7 +188,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "スカーレットEX(20mm) 6インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -212,7 +196,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "スカーレットEX(20mm) 3インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -220,7 +204,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "ツイスト(18mm) 6インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -228,7 +212,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "ツイスト(18mm) 4インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -236,7 +220,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "ツイスト(18mm) 3インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -244,7 +228,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "スクリュー(21mm) 6インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -252,7 +236,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "スクリュー(21mm) 4インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -260,7 +244,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "Sky(13mm) 6インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -268,7 +252,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "Sky(13mm) 4インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -276,7 +260,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "Sky(13mm) 3インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -284,7 +268,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "Micro ACE(13mm) 6インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -292,7 +276,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "Micro ACE(13mm) 4インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   },
   {
@@ -300,7 +284,7 @@ const supplies = [
     manufacturer: "大塚刷毛",
     name: "Micro ACE(13mm) 3インチ",
     quantity: 1,
-    unitOptions: ["箱", "袋", "缶"],
+    unitOptions: ["箱", "袋"],
     defaultUnit: "箱"
   }
 ];
