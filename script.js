@@ -604,12 +604,21 @@ function renderSiteList() {
   siteList.querySelectorAll(".site-delete-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const idx = Number(btn.dataset.index);
+      const siteName = appState.registeredSites[idx].name;
+      if (!confirm(`「${siteName}」を削除してよろしいですか？`)) return;
       appState.registeredSites.splice(idx, 1);
       saveRegisteredSites();
       updateSiteDatalist();
       renderSiteList();
     });
   });
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
 function addSite() {
@@ -626,6 +635,7 @@ function addSite() {
   newSiteNameInput.value = "";
   newSiteAddressInput.value = "";
   renderSiteList();
+  showToast(`「${name}」を登録しました`);
 }
 
 function getItemsByTab(tabName) {
