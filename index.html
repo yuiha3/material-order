@@ -68,10 +68,11 @@
             <label for="siteNameInput">現場名 <span class="required-badge site-required-badge" style="display:none;">必須</span></label>
             <button id="openSiteModalBtn" class="site-manage-btn" type="button">登録・削除</button>
           </div>
-          <input id="siteNameInput" type="text" list="siteNameList" value="なし" placeholder="現場名を入力または選択" />
-          <datalist id="siteNameList">
-            <option value="なし"></option>
-          </datalist>
+          <div class="combobox" id="siteCombobox">
+            <input id="siteNameInput" type="text" value="なし" placeholder="現場名を入力または選択" autocomplete="off" />
+            <button class="combobox-arrow" id="siteComboboxBtn" type="button" aria-label="選択肢を表示">▾</button>
+            <div class="combobox-dropdown" id="siteDropdown" style="display:none;"></div>
+          </div>
         </div>
 
         <div class="field address-field" id="addressField" style="display:none;">
@@ -124,6 +125,19 @@
           <button id="addSiteBtn" class="primary-btn" type="button" style="margin-top:14px;width:100%;">登録する</button>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div id="confirmModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card confirm-card">
+      <div class="confirm-body">
+        <p id="confirmMessage" class="confirm-message"></p>
+        <div class="confirm-actions">
+          <button id="confirmCancelBtn" class="ghost-btn" type="button">キャンセル</button>
+          <button id="confirmOkBtn" class="danger-btn" type="button">削除する</button>
+        </div>
       </div>
     </div>
   </div>

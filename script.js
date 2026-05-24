@@ -533,7 +533,7 @@ const clearSearchBtn = document.getElementById("clearSearchBtn");
 const staffSelect = document.getElementById("staffSelect");
 const locationSelect = document.getElementById("locationSelect");
 const siteNameInput = document.getElementById("siteNameInput");
-const siteNameList = document.getElementById("siteNameList");
+const siteComboboxBtn = document.getElementById("siteComboboxBtn");
 const addressField = document.getElementById("addressField");
 const addressInput = document.getElementById("addressInput");
 const tabButtons = document.querySelectorAll(".tab-btn");
@@ -548,14 +548,67 @@ const addSiteBtn = document.getElementById("addSiteBtn");
 
 /* ── Site datalist & auto-fill ────────────── */
 
-function updateSiteDatalist() {
-  // Keep "なし" as first option, then registered sites
-  siteNameList.innerHTML = '<option value="なし"></option>';
-  appState.registeredSites.forEach(site => {
-    const opt = document.createElement("option");
-    opt.value = site.name;
-    siteNameList.appendChild(opt);
+/* ── Combobox ─────────────────────────────── */
+
+function getComboboxOptions() {
+  return ["なし", ...appState.registeredSites.map(s => s.name)];
+}
+
+function renderComboboxDropdown(filter = "") {
+  const dropdown = document.getElementById("siteDropdown");
+  const options = getComboboxOptions().filter(name =>
+    filter === "" || name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  dropdown.innerHTML = "";
+  if (options.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "combobox-empty";
+    empty.textContent = "候補がありません";
+    dropdown.appendChild(empty);
+    return;
+  }
+
+  options.forEach(name => {
+    const item = document.createElement("div");
+    item.className = "combobox-option";
+    if (name === siteNameInput.value) item.classList.add("selected");
+    item.textContent = name;
+    item.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      selectComboboxOption(name);
+    });
+    dropdown.appendChild(item);
   });
+}
+
+function openCombobox() {
+  const dropdown = document.getElementById("siteDropdown");
+  renderComboboxDropdown();
+  dropdown.style.display = "block";
+  document.getElementById("siteCombobox").classList.add("open");
+}
+
+function closeCombobox() {
+  const dropdown = document.getElementById("siteDropdown");
+  dropdown.style.display = "none";
+  document.getElementById("siteCombobox").classList.remove("open");
+}
+
+function selectComboboxOption(name) {
+  siteNameInput.value = name;
+  appState.selectedSiteName = name;
+  closeCombobox();
+  autoFillAddress(name);
+  refreshPreview();
+}
+
+function updateSiteDatalist() {
+  // Re-render dropdown if open
+  const dropdown = document.getElementById("siteDropdown");
+  if (dropdown && dropdown.style.display === "block") {
+    renderComboboxDropdown(siteNameInput.value);
+  }
 }
 
 function autoFillAddress(siteName) {
@@ -605,11 +658,12 @@ function renderSiteList() {
     btn.addEventListener("click", () => {
       const idx = Number(btn.dataset.index);
       const siteName = appState.registeredSites[idx].name;
-      if (!confirm(`「${siteName}」を削除してよろしいですか？`)) return;
-      appState.registeredSites.splice(idx, 1);
-      saveRegisteredSites();
-      updateSiteDatalist();
-      renderSiteList();
+      showConfirm(`「${siteName}」を削除してよろしいですか？`, () => {
+        appState.registeredSites.splice(idx, 1);
+        saveRegisteredSites();
+        updateSiteDatalist();
+        renderSiteList();
+      });
     });
   });
 }
@@ -619,6 +673,34 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function showConfirm(message, onOk) {
+  const modal = document.getElementById("confirmModal");
+  document.getElementById("confirmMessage").textContent = message;
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+  const okBtn = document.getElementById("confirmOkBtn");
+  const cancelBtn = document.getElementById("confirmCancelBtn");
+
+  function cleanup() {
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+    okBtn.replaceWith(okBtn.cloneNode(true));
+    cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+  }
+
+  document.getElementById("confirmOkBtn").addEventListener("click", () => {
+    cleanup();
+    onOk();
+  });
+
+  document.getElementById("confirmCancelBtn").addEventListener("click", cleanup);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) cleanup();
+  }, { once: true });
 }
 
 function addSite() {
@@ -1074,8 +1156,29 @@ locationSelect.addEventListener("change", (e) => {
 
 siteNameInput.addEventListener("input", (e) => {
   appState.selectedSiteName = e.target.value;
-  autoFillAddress(e.target.value);
+  renderComboboxDropdown(e.target.value);
+  document.getElementById("siteDropdown").style.display = "block";
+  document.getElementById("siteCombobox").classList.add("open");
   refreshPreview();
+});
+
+siteNameInput.addEventListener("focus", () => {
+  openCombobox();
+});
+
+siteNameInput.addEventListener("blur", () => {
+  // Delay to allow mousedown on option to fire first
+  setTimeout(closeCombobox, 150);
+});
+
+siteComboboxBtn.addEventListener("click", () => {
+  const dropdown = document.getElementById("siteDropdown");
+  if (dropdown.style.display === "block") {
+    closeCombobox();
+  } else {
+    siteNameInput.focus();
+    openCombobox();
+  }
 });
 
 siteNameInput.addEventListener("change", (e) => {

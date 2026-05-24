@@ -967,3 +967,149 @@ textarea:focus {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+/* ─── Confirm modal ──────────────────────── */
+
+.confirm-card {
+  max-width: 340px;
+}
+
+.confirm-body {
+  padding: 28px 24px 24px;
+}
+
+.confirm-message {
+  margin: 0 0 24px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.65;
+  text-align: center;
+}
+
+.confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.danger-btn {
+  height: 46px;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 0 20px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #dc2626;
+  color: white;
+  box-shadow: 0 2px 10px rgba(220,38,38,0.25);
+  transition: all 0.15s ease;
+}
+
+.danger-btn:hover {
+  background: #b91c1c;
+  box-shadow: 0 4px 14px rgba(220,38,38,0.32);
+  transform: translateY(-1px);
+}
+
+.danger-btn:active {
+  transform: translateY(0);
+}
+
+/* ─── Combobox ───────────────────────────── */
+
+.combobox {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.combobox input {
+  flex: 1;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--line);
+  background: white;
+  padding: 0 40px 0 10px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.combobox.open input,
+.combobox input:focus {
+  border-color: var(--brand-border);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+.combobox-arrow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 42px;
+  width: 38px;
+  border: none;
+  background: transparent;
+  color: var(--muted-light);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, transform 0.2s;
+}
+
+.combobox.open .combobox-arrow {
+  color: var(--brand);
+  transform: rotate(180deg);
+}
+
+.combobox-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.combobox-option {
+  padding: 11px 14px;
+  font-size: 0.875rem;
+  color: var(--text);
+  cursor: pointer;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background 0.12s;
+}
+
+.combobox-option:last-child {
+  border-bottom: none;
+}
+
+.combobox-option:hover,
+.combobox-option:active {
+  background: var(--brand-bg);
+}
+
+.combobox-option.selected {
+  color: var(--brand);
+  font-weight: 700;
+  background: var(--brand-bg);
+}
+
+.combobox-empty {
+  padding: 14px;
+  text-align: center;
+  color: var(--muted-light);
+  font-size: 0.85rem;
+}
