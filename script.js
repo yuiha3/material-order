@@ -505,8 +505,24 @@ const PLACEHOLDER_TEXT = "(選択した材料がここに表示されます)";
 const appState = {
   activeTab: "資材",
   selectedStaffName: "藤ノ木",
+  selectedLocation: "新座倉庫入れ",
+  selectedSiteName: "なし",
+  selectedAddress: "",
+  registeredSites: [],
   selectedItems: {}
 };
+
+// Load registered sites from localStorage
+function loadRegisteredSites() {
+  try {
+    const saved = localStorage.getItem("registeredSites");
+    if (saved) appState.registeredSites = JSON.parse(saved);
+  } catch { appState.registeredSites = []; }
+}
+
+function saveRegisteredSites() {
+  localStorage.setItem("registeredSites", JSON.stringify(appState.registeredSites));
+}
 
 const makersContainer = document.getElementById("makersContainer");
 const resultText = document.getElementById("resultText");
@@ -515,8 +531,102 @@ const copyBtn = document.getElementById("copyBtn");
 const resetBtn = document.getElementById("resetBtn");
 const clearSearchBtn = document.getElementById("clearSearchBtn");
 const staffSelect = document.getElementById("staffSelect");
+const locationSelect = document.getElementById("locationSelect");
+const siteNameInput = document.getElementById("siteNameInput");
+const siteNameList = document.getElementById("siteNameList");
+const addressField = document.getElementById("addressField");
+const addressInput = document.getElementById("addressInput");
 const tabButtons = document.querySelectorAll(".tab-btn");
 const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
+const siteModal = document.getElementById("siteModal");
+const openSiteModalBtn = document.getElementById("openSiteModalBtn");
+const closeModalBtn = document.getElementById("closeModalBtn");
+const siteList = document.getElementById("siteList");
+const newSiteNameInput = document.getElementById("newSiteNameInput");
+const newSiteAddressInput = document.getElementById("newSiteAddressInput");
+const addSiteBtn = document.getElementById("addSiteBtn");
+
+/* ── Site datalist & auto-fill ────────────── */
+
+function updateSiteDatalist() {
+  // Keep "なし" as first option, then registered sites
+  siteNameList.innerHTML = '<option value="なし"></option>';
+  appState.registeredSites.forEach(site => {
+    const opt = document.createElement("option");
+    opt.value = site.name;
+    siteNameList.appendChild(opt);
+  });
+}
+
+function autoFillAddress(siteName) {
+  const match = appState.registeredSites.find(s => s.name === siteName);
+  if (match) {
+    addressInput.value = match.address;
+    appState.selectedAddress = match.address;
+    refreshPreview();
+  }
+}
+
+/* ── Modal ────────────────────────────────── */
+
+function openModal() {
+  renderSiteList();
+  siteModal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+  siteModal.style.display = "none";
+  document.body.style.overflow = "";
+  newSiteNameInput.value = "";
+  newSiteAddressInput.value = "";
+}
+
+function renderSiteList() {
+  if (appState.registeredSites.length === 0) {
+    siteList.innerHTML = '<div class="site-list-empty">まだ登録された現場はありません</div>';
+    return;
+  }
+  siteList.innerHTML = "";
+  appState.registeredSites.forEach((site, index) => {
+    const item = document.createElement("div");
+    item.className = "site-list-item";
+    item.innerHTML = `
+      <div class="site-list-info">
+        <div class="site-list-name">${site.name}</div>
+        <div class="site-list-address">${site.address}</div>
+      </div>
+      <button class="site-delete-btn" type="button" data-index="${index}">削除</button>
+    `;
+    siteList.appendChild(item);
+  });
+
+  siteList.querySelectorAll(".site-delete-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = Number(btn.dataset.index);
+      appState.registeredSites.splice(idx, 1);
+      saveRegisteredSites();
+      updateSiteDatalist();
+      renderSiteList();
+    });
+  });
+}
+
+function addSite() {
+  const name = newSiteNameInput.value.trim();
+  const address = newSiteAddressInput.value.trim();
+  if (!name || !address) return;
+  if (appState.registeredSites.some(s => s.name === name)) {
+    alert(`「${name}」はすでに登録されています。`);
+    return;
+  }
+  appState.registeredSites.push({ name, address });
+  saveRegisteredSites();
+  updateSiteDatalist();
+  newSiteNameInput.value = "";
+  newSiteAddressInput.value = "";
+  renderSiteList();
+}
 
 function getItemsByTab(tabName) {
   switch (tabName) {
@@ -536,7 +646,7 @@ function getItemsByTab(tabName) {
 function getHeaderText() {
   return `お世話になります。
 4Uの${appState.selectedStaffName}です。
-下記の注文を新座倉庫入れでお願いいたします。`;
+下記の注文を${appState.selectedLocation}でお願いいたします。`;
 }
 
 function createInitialSelection(item) {
@@ -823,7 +933,7 @@ function buildOrderLines() {
     if (selected.colorCode) parts.push(`色番:${selected.colorCode}`);
     if (selected.gloss) parts.push(selected.gloss);
 
-    let line = parts.join(" ");
+    let line = "・" + parts.join(" ");
     line += `  ${selected.quantity}${selected.unit}`;
 
     grouped[selected.manufacturer].push(line);
@@ -844,14 +954,35 @@ function buildOrderLines() {
   return lines;
 }
 
+function updateCopyButtonState() {
+  const isOnsite = appState.selectedLocation === "現場入れ";
+  const hasValidSiteName = appState.selectedSiteName.trim() !== "" && appState.selectedSiteName.trim() !== "なし";
+  const hasAddress = appState.selectedAddress.trim().length > 0;
+  copyBtn.disabled = isOnsite && !(hasValidSiteName && hasAddress);
+  copyBtn.style.opacity = copyBtn.disabled ? "0.45" : "";
+  copyBtn.style.cursor = copyBtn.disabled ? "not-allowed" : "";
+}
+
 function refreshPreview() {
   const ordered = buildOrderLines();
+
+  let suffix = "";
+  if (appState.selectedSiteName && appState.selectedSiteName !== "なし") {
+    suffix += `\n\n\n現場名：${appState.selectedSiteName}`;
+    if (appState.selectedLocation === "現場入れ" && appState.selectedAddress.trim()) {
+      suffix += `\n現場住所：${appState.selectedAddress.trim()}`;
+    }
+  } else if (appState.selectedLocation === "現場入れ" && appState.selectedAddress.trim()) {
+    suffix += `\n\n\n現場住所：${appState.selectedAddress.trim()}`;
+  }
 
   if (!ordered.length) {
     resultText.value = PLACEHOLDER_TEXT;
   } else {
-    resultText.value = `${getHeaderText()}\n\n${ordered.join("\n")}`;
+    resultText.value = `${getHeaderText()}\n\n${ordered.join("\n")}${suffix}`;
   }
+
+  updateCopyButtonState();
 }
 
 function render() {
@@ -867,6 +998,7 @@ function render() {
 }
 
 async function copyResult() {
+  if (copyBtn.disabled) return;
   const value = resultText.value;
   if (!value || value === PLACEHOLDER_TEXT) return;
 
@@ -918,6 +1050,43 @@ staffSelect.addEventListener("change", (e) => {
   refreshPreview();
 });
 
+locationSelect.addEventListener("change", (e) => {
+  appState.selectedLocation = e.target.value;
+  const isOnsite = e.target.value === "現場入れ";
+  addressField.style.display = isOnsite ? "grid" : "none";
+  siteNameInput.labels[0].querySelector(".site-required-badge").style.display = isOnsite ? "inline-block" : "none";
+  if (!isOnsite) {
+    appState.selectedAddress = "";
+    addressInput.value = "";
+  }
+  refreshPreview();
+});
+
+siteNameInput.addEventListener("input", (e) => {
+  appState.selectedSiteName = e.target.value;
+  autoFillAddress(e.target.value);
+  refreshPreview();
+});
+
+siteNameInput.addEventListener("change", (e) => {
+  autoFillAddress(e.target.value);
+});
+
+openSiteModalBtn.addEventListener("click", openModal);
+closeModalBtn.addEventListener("click", closeModal);
+siteModal.addEventListener("click", (e) => {
+  if (e.target === siteModal) closeModal();
+});
+addSiteBtn.addEventListener("click", addSite);
+newSiteAddressInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") addSite();
+});
+
+addressInput.addEventListener("input", (e) => {
+  appState.selectedAddress = e.target.value;
+  refreshPreview();
+});
+
 tabButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     appState.activeTab = btn.dataset.tab;
@@ -949,6 +1118,8 @@ if (scrollToBottomBtn) {
   window.addEventListener("resize", updateScrollButtonVisibility);
 }
 
+loadRegisteredSites();
+updateSiteDatalist();
 resultText.value = PLACEHOLDER_TEXT;
 render();
 updateScrollButtonVisibility();

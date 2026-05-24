@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>発注リスト作成</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -52,6 +55,30 @@
           <select id="staffSelect"></select>
         </div>
 
+        <div class="field location-field">
+          <label for="locationSelect">受け取り場所</label>
+          <select id="locationSelect">
+            <option value="新座倉庫入れ" selected>新座倉庫入れ</option>
+            <option value="現場入れ">現場入れ</option>
+          </select>
+        </div>
+
+        <div class="field site-field">
+          <div class="site-field-label-row">
+            <label for="siteNameInput">現場名 <span class="required-badge site-required-badge" style="display:none;">必須</span></label>
+            <button id="openSiteModalBtn" class="site-manage-btn" type="button">登録・削除</button>
+          </div>
+          <input id="siteNameInput" type="text" list="siteNameList" value="なし" placeholder="現場名を入力または選択" />
+          <datalist id="siteNameList">
+            <option value="なし"></option>
+          </datalist>
+        </div>
+
+        <div class="field address-field" id="addressField" style="display:none;">
+          <label for="addressInput">現場住所 <span class="required-badge">必須</span></label>
+          <input id="addressInput" type="text" placeholder="住所を入力してください" />
+        </div>
+
         <div class="preview-head">
           <div class="preview-title">PREVIEW</div>
         </div>
@@ -62,13 +89,47 @@
           <button id="copyBtn" class="primary-btn" type="button">コピー</button>
           <button id="resetBtn" class="ghost-btn" type="button">リセット</button>
         </div>
-        
       </div>
     </aside>
   </div>
 
+  <!-- Site Registration Modal -->
+  <div id="siteModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">現場名・住所の登録</h3>
+        <button id="closeModalBtn" class="modal-close-btn" type="button" aria-label="閉じる">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Registered list -->
+        <div class="modal-section">
+          <p class="modal-section-label">登録済み現場</p>
+          <div id="siteList" class="site-list">
+            <div class="site-list-empty">まだ登録された現場はありません</div>
+          </div>
+        </div>
+
+        <!-- Add new site form -->
+        <div class="modal-section modal-add-form">
+          <p class="modal-section-label">新規登録</p>
+          <div class="field">
+            <label for="newSiteNameInput">現場名</label>
+            <input id="newSiteNameInput" type="text" placeholder="例：渋谷ビル" />
+          </div>
+          <div class="field" style="margin-top:10px;">
+            <label for="newSiteAddressInput">現場住所</label>
+            <input id="newSiteAddressInput" type="text" placeholder="例：東京都渋谷区〇〇1-2-3" />
+          </div>
+          <button id="addSiteBtn" class="primary-btn" type="button" style="margin-top:14px;width:100%;">登録する</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <button id="scrollToBottomBtn" class="floating-scroll-btn" type="button" aria-label="一番下までスクロール">
-  ↓
+    ↓
   </button>
 
   <script src="script.js"></script>
