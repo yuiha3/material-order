@@ -46,6 +46,11 @@ html, body {
   min-height: 100vh;
 }
 
+/* Prevent iOS auto-zoom: all inputs and selects use 16px */
+input, select {
+  font-size: 1rem !important;
+}
+
 body {
   background-image:
     radial-gradient(ellipse at 8% 0%, rgba(59,79,168,0.07) 0%, transparent 48%),
