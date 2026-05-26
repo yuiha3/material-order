@@ -1302,3 +1302,37 @@ textarea:focus {
     max-width: 100%;
   }
 }
+
+/* ─── Toolbar manage row ─────────────────── */
+
+.toolbar-manage-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.manage-row-btn {
+  height: 42px;
+  border: 1.5px dashed var(--brand-border);
+  border-radius: var(--radius-lg);
+  background: var(--brand-bg);
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.manage-row-btn:hover {
+  background: var(--brand-bg-deep);
+  border-style: solid;
+}
+
+/* tabs-row no longer needs the ⚙ button space */
+.tabs-row {
+  margin-bottom: 0;
+}
