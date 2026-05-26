@@ -499,8 +499,11 @@ const paints = [
 const STAFF_NAMES = ["高崎", "上田", "石澤", "栗原", "齊藤", "ウンス", "滝本", "山下", "藤ノ木", "福王寺", "大浦"];
 const PLACEHOLDER_TEXT = "(選択した材料がここに表示されます)";
 
+const DEFAULT_TABS = ["養生", "容器", "刷毛", "ローラー", "塗料"];
+
 const appState = {
   activeTab: "養生",
+  tabs: [...DEFAULT_TABS],
   selectedStaffName: "藤ノ木",
   selectedLocation: "新座倉庫入れ",
   selectedSiteName: "なし",
@@ -509,7 +512,6 @@ const appState = {
   selectedItems: {}
 };
 
-// Load registered sites from localStorage
 function loadRegisteredSites() {
   try {
     const saved = localStorage.getItem("registeredSites");
@@ -519,6 +521,17 @@ function loadRegisteredSites() {
 
 function saveRegisteredSites() {
   localStorage.setItem("registeredSites", JSON.stringify(appState.registeredSites));
+}
+
+function loadTabs() {
+  try {
+    const saved = localStorage.getItem("appTabs");
+    if (saved) appState.tabs = JSON.parse(saved);
+  } catch { appState.tabs = [...DEFAULT_TABS]; }
+}
+
+function saveTabs() {
+  localStorage.setItem("appTabs", JSON.stringify(appState.tabs));
 }
 
 const makersContainer = document.getElementById("makersContainer");
@@ -534,6 +547,13 @@ const siteComboboxBtn = document.getElementById("siteComboboxBtn");
 const addressField = document.getElementById("addressField");
 const addressInput = document.getElementById("addressInput");
 const tabButtons = document.querySelectorAll(".tab-btn");
+const tabsContainer = document.getElementById("tabsContainer");
+const openTabModalBtn = document.getElementById("openTabModalBtn");
+const closeTabModalBtn = document.getElementById("closeTabModalBtn");
+const tabModal = document.getElementById("tabModal");
+const tabList = document.getElementById("tabList");
+const newTabNameInput = document.getElementById("newTabNameInput");
+const addTabBtn = document.getElementById("addTabBtn");
 const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
 const siteModal = document.getElementById("siteModal");
 const openSiteModalBtn = document.getElementById("openSiteModalBtn");
@@ -543,7 +563,89 @@ const newSiteNameInput = document.getElementById("newSiteNameInput");
 const newSiteAddressInput = document.getElementById("newSiteAddressInput");
 const addSiteBtn = document.getElementById("addSiteBtn");
 
-/* ── Site datalist & auto-fill ────────────── */
+/* ── Tabs ─────────────────────────────────── */
+
+function renderTabs() {
+  tabsContainer.innerHTML = "";
+  appState.tabs.forEach(tabName => {
+    const btn = document.createElement("button");
+    btn.className = "tab-btn" + (tabName === appState.activeTab ? " active" : "");
+    btn.type = "button";
+    btn.dataset.tab = tabName;
+    btn.textContent = tabName;
+    btn.addEventListener("click", () => {
+      appState.activeTab = tabName;
+      renderTabs();
+      render();
+    });
+    tabsContainer.appendChild(btn);
+  });
+}
+
+/* ── Tab Modal ────────────────────────────── */
+
+function openTabModal() {
+  renderTabList();
+  tabModal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function closeTabModal() {
+  tabModal.style.display = "none";
+  document.body.style.overflow = "";
+  newTabNameInput.value = "";
+}
+
+function renderTabList() {
+  if (appState.tabs.length === 0) {
+    tabList.innerHTML = '<div class="site-list-empty">タブがありません</div>';
+    return;
+  }
+  tabList.innerHTML = "";
+  appState.tabs.forEach((tabName, index) => {
+    const item = document.createElement("div");
+    item.className = "site-list-item";
+    item.innerHTML = `
+      <div class="site-list-info">
+        <div class="site-list-name">${tabName}</div>
+      </div>
+      <button class="site-delete-btn tab-delete-btn" type="button" data-index="${index}">削除</button>
+    `;
+    tabList.appendChild(item);
+  });
+
+  tabList.querySelectorAll(".tab-delete-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = Number(btn.dataset.index);
+      const name = appState.tabs[idx];
+      showConfirm(`タブ「${name}」を削除してよろしいですか？`, () => {
+        appState.tabs.splice(idx, 1);
+        if (appState.activeTab === name) {
+          appState.activeTab = appState.tabs[0] || "";
+        }
+        saveTabs();
+        renderTabs();
+        render();
+        renderTabList();
+      });
+    });
+  });
+}
+
+function addTab() {
+  const name = newTabNameInput.value.trim();
+  if (!name) return;
+  if (appState.tabs.includes(name)) {
+    showToast(`「${name}」は既に存在します`);
+    return;
+  }
+  appState.tabs.push(name);
+  saveTabs();
+  renderTabs();
+  renderTabList();
+  newTabNameInput.value = "";
+  showToast(`タブ「${name}」を追加しました`);
+}
 
 /* ── Combobox ─────────────────────────────── */
 
@@ -1196,14 +1298,11 @@ addressInput.addEventListener("input", (e) => {
   refreshPreview();
 });
 
-tabButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    appState.activeTab = btn.dataset.tab;
-    tabButtons.forEach((x) => x.classList.remove("active"));
-    btn.classList.add("active");
-    render();
-  });
-});
+openTabModalBtn.addEventListener("click", openTabModal);
+closeTabModalBtn.addEventListener("click", closeTabModal);
+tabModal.addEventListener("click", (e) => { if (e.target === tabModal) closeTabModal(); });
+addTabBtn.addEventListener("click", addTab);
+newTabNameInput.addEventListener("keydown", (e) => { if (e.key === "Enter") addTab(); });
 
 searchInput.addEventListener("input", render);
 
@@ -1228,7 +1327,9 @@ if (scrollToBottomBtn) {
 }
 
 loadRegisteredSites();
+loadTabs();
 updateSiteDatalist();
+renderTabs();
 resultText.value = PLACEHOLDER_TEXT;
 render();
 updateScrollButtonVisibility();

@@ -1119,3 +1119,40 @@ textarea:focus {
   color: var(--muted-light);
   font-size: 0.85rem;
 }
+
+/* ─── Tabs row with manage button ────────── */
+
+.tabs-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.tabs-row .tabs {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.tab-manage-btn {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  margin-top: 4px;
+}
+
+.tab-manage-btn:hover {
+  background: var(--brand-bg);
+  border-color: var(--brand-border);
+  color: var(--brand);
+}

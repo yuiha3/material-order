@@ -35,12 +35,9 @@
         042-354-6622
       </div>
 
-      <div class="tabs">
-        <button class="tab-btn active" type="button" data-tab="養生">養生</button>
-        <button class="tab-btn" type="button" data-tab="容器">容器</button>
-        <button class="tab-btn" type="button" data-tab="刷毛">刷毛</button>
-        <button class="tab-btn" type="button" data-tab="ローラー">ローラー</button>
-        <button class="tab-btn" type="button" data-tab="塗料">塗料</button>
+      <div class="tabs-row">
+        <div id="tabsContainer" class="tabs"></div>
+        <button id="openTabModalBtn" class="tab-manage-btn" type="button" aria-label="タブ管理">⚙</button>
       </div>
 
       <div id="makersContainer" class="makers"></div>
@@ -126,6 +123,30 @@
           <button id="addSiteBtn" class="primary-btn" type="button" style="margin-top:14px;width:100%;">登録する</button>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Management Modal -->
+  <div id="tabModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">タブの管理</h3>
+        <button id="closeTabModalBtn" class="modal-close-btn" type="button" aria-label="閉じる">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <p class="modal-section-label">現在のタブ</p>
+          <div id="tabList" class="site-list"></div>
+        </div>
+        <div class="modal-section modal-add-form">
+          <p class="modal-section-label">タブを追加</p>
+          <div class="field">
+            <label for="newTabNameInput">タブ名（カテゴリ名）</label>
+            <input id="newTabNameInput" type="text" placeholder="例：シール、防水" />
+          </div>
+          <button id="addTabBtn" class="primary-btn" type="button" style="margin-top:14px;width:100%;">追加する</button>
+        </div>
       </div>
     </div>
   </div>
