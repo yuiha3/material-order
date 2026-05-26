@@ -1156,3 +1156,149 @@ textarea:focus {
   border-color: var(--brand-border);
   color: var(--brand);
 }
+
+/* ─── Item manage button ─────────────────── */
+
+.toolbar {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.item-manage-btn {
+  width: 100%;
+  height: 42px;
+  border: 1.5px dashed var(--brand-border);
+  border-radius: var(--radius-lg);
+  background: var(--brand-bg);
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.item-manage-btn:hover {
+  background: var(--brand-bg-deep);
+  border-style: solid;
+}
+
+/* ─── Item modal ─────────────────────────── */
+
+.modal-card-wide {
+  max-width: 640px;
+}
+
+.item-modal-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.item-category-filter {
+  height: 34px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: white;
+  padding: 0 10px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  outline: none;
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.item-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-list-group-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--muted-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 4px 2px;
+}
+
+.item-list-row {
+  align-items: flex-start;
+}
+
+.item-list-actions {
+  flex-shrink: 0;
+}
+
+.item-deleted {
+  opacity: 0.5;
+}
+
+.item-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 1px 5px;
+  vertical-align: middle;
+  margin-left: 5px;
+  letter-spacing: 0.02em;
+}
+
+.item-badge-custom {
+  color: var(--brand);
+  background: var(--brand-bg);
+  border: 1px solid var(--brand-border);
+}
+
+.item-badge-builtin {
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.item-badge-deleted {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.restore-btn {
+  color: var(--brand) !important;
+  background: var(--brand-bg) !important;
+  border-color: var(--brand-border) !important;
+}
+
+/* ─── Item add form grid ─────────────────── */
+
+.item-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.item-form-full {
+  grid-column: span 2;
+}
+
+@media (max-width: 560px) {
+  .item-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .item-form-full {
+    grid-column: span 1;
+  }
+  .modal-card-wide {
+    max-width: 100%;
+  }
+}

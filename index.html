@@ -27,6 +27,7 @@
           </div>
           <button id="clearSearchBtn" class="ghost-btn search-clear-btn" type="button">検索クリア</button>
         </div>
+        <button id="openItemModalBtn" class="item-manage-btn" type="button">＋ 材料を追加・削除</button>
       </div>
 
       <div class="supplier-information">
@@ -121,6 +122,78 @@
             <input id="newSiteAddressInput" type="text" placeholder="例：東京都渋谷区〇〇1-2-3" />
           </div>
           <button id="addSiteBtn" class="primary-btn" type="button" style="margin-top:14px;width:100%;">登録する</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Item Management Modal -->
+  <div id="itemModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card modal-card-wide">
+      <div class="modal-header">
+        <h3 class="modal-title">材料の追加・削除</h3>
+        <button id="closeItemModalBtn" class="modal-close-btn" type="button" aria-label="閉じる">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Filter & list -->
+        <div class="modal-section">
+          <div class="item-modal-list-header">
+            <p class="modal-section-label" style="margin:0;">登録済み材料</p>
+            <select id="itemListCategoryFilter" class="item-category-filter"></select>
+          </div>
+          <div id="itemList" class="item-list"></div>
+        </div>
+
+        <!-- Add form -->
+        <div class="modal-section modal-add-form">
+          <p class="modal-section-label">新規追加</p>
+
+          <div class="item-form-grid">
+            <div class="field">
+              <label for="newItemCategory">カテゴリ <span class="required-badge">必須</span></label>
+              <select id="newItemCategory"></select>
+            </div>
+            <div class="field">
+              <label for="newItemMaker">メーカー名 <span class="required-badge">必須</span></label>
+              <input id="newItemMaker" type="text" placeholder="例：大塚刷毛" />
+            </div>
+            <div class="field item-form-full">
+              <label for="newItemName">商品名 <span class="required-badge">必須</span></label>
+              <input id="newItemName" type="text" placeholder="例：スカーレットEX(25mm) 6インチ" />
+            </div>
+            <div class="field">
+              <label for="newItemUnits">単位オプション <span class="required-badge">必須</span></label>
+              <input id="newItemUnits" type="text" placeholder="例：箱,袋（カンマ区切り）" />
+            </div>
+            <div class="field">
+              <label for="newItemCapacities">容量オプション</label>
+              <input id="newItemCapacities" type="text" placeholder="例：16kg,4kg（任意）" />
+            </div>
+            <div class="field">
+              <label for="newItemColorMode">色設定</label>
+              <select id="newItemColorMode">
+                <option value="none">なし</option>
+                <option value="code">色番号入力</option>
+                <option value="name">色名選択</option>
+              </select>
+            </div>
+            <div class="field item-color-code-field" style="display:none;">
+              <label for="newItemDefaultColorCode">デフォルト色番号</label>
+              <input id="newItemDefaultColorCode" type="text" placeholder="例：N-90" />
+            </div>
+            <div class="field item-color-name-field item-form-full" style="display:none;">
+              <label for="newItemColorNames">色名リスト</label>
+              <input id="newItemColorNames" type="text" placeholder="例：白,グレー,赤さび（カンマ区切り）" />
+            </div>
+            <div class="field item-form-full">
+              <label for="newItemGlosses">艶オプション</label>
+              <input id="newItemGlosses" type="text" placeholder="例：艶あり,半艶,艶なし（任意）" />
+            </div>
+          </div>
+
+          <button id="addItemBtn" class="primary-btn" type="button" style="margin-top:16px;width:100%;">追加する</button>
         </div>
 
       </div>

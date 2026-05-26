@@ -509,6 +509,8 @@ const appState = {
   selectedSiteName: "なし",
   selectedAddress: "",
   registeredSites: [],
+  customItems: [],
+  deletedItemKeys: [],
   selectedItems: {}
 };
 
@@ -521,6 +523,32 @@ function loadRegisteredSites() {
 
 function saveRegisteredSites() {
   localStorage.setItem("registeredSites", JSON.stringify(appState.registeredSites));
+}
+
+function loadCustomItems() {
+  try {
+    const saved = localStorage.getItem("customItems");
+    if (saved) appState.customItems = JSON.parse(saved);
+  } catch { appState.customItems = []; }
+}
+
+function saveCustomItems() {
+  localStorage.setItem("customItems", JSON.stringify(appState.customItems));
+}
+
+function loadDeletedItemKeys() {
+  try {
+    const saved = localStorage.getItem("deletedItemKeys");
+    if (saved) appState.deletedItemKeys = JSON.parse(saved);
+  } catch { appState.deletedItemKeys = []; }
+}
+
+function saveDeletedItemKeys() {
+  localStorage.setItem("deletedItemKeys", JSON.stringify(appState.deletedItemKeys));
+}
+
+function itemKey(manufacturer, name) {
+  return `${manufacturer}||${name}`;
 }
 
 function loadTabs() {
@@ -554,6 +582,21 @@ const tabModal = document.getElementById("tabModal");
 const tabList = document.getElementById("tabList");
 const newTabNameInput = document.getElementById("newTabNameInput");
 const addTabBtn = document.getElementById("addTabBtn");
+const openItemModalBtn = document.getElementById("openItemModalBtn");
+const closeItemModalBtn = document.getElementById("closeItemModalBtn");
+const itemModal = document.getElementById("itemModal");
+const itemList = document.getElementById("itemList");
+const itemListCategoryFilter = document.getElementById("itemListCategoryFilter");
+const newItemCategory = document.getElementById("newItemCategory");
+const newItemMaker = document.getElementById("newItemMaker");
+const newItemName = document.getElementById("newItemName");
+const newItemUnits = document.getElementById("newItemUnits");
+const newItemCapacities = document.getElementById("newItemCapacities");
+const newItemColorMode = document.getElementById("newItemColorMode");
+const newItemDefaultColorCode = document.getElementById("newItemDefaultColorCode");
+const newItemColorNames = document.getElementById("newItemColorNames");
+const newItemGlosses = document.getElementById("newItemGlosses");
+const addItemBtn = document.getElementById("addItemBtn");
 const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
 const siteModal = document.getElementById("siteModal");
 const openSiteModalBtn = document.getElementById("openSiteModalBtn");
@@ -645,6 +688,201 @@ function addTab() {
   renderTabList();
   newTabNameInput.value = "";
   showToast(`タブ「${name}」を追加しました`);
+}
+
+/* ── Item Modal ───────────────────────────── */
+
+function parseCSV(str) {
+  return str.split(",").map(s => s.trim()).filter(Boolean);
+}
+
+function openItemModal() {
+  populateItemCategorySelects();
+  renderItemList(itemListCategoryFilter.value);
+  itemModal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function closeItemModal() {
+  itemModal.style.display = "none";
+  document.body.style.overflow = "";
+  resetItemForm();
+}
+
+function resetItemForm() {
+  newItemMaker.value = "";
+  newItemName.value = "";
+  newItemUnits.value = "";
+  newItemCapacities.value = "";
+  newItemColorMode.value = "none";
+  newItemDefaultColorCode.value = "";
+  newItemColorNames.value = "";
+  newItemGlosses.value = "";
+  updateColorFields();
+}
+
+function populateItemCategorySelects() {
+  const options = appState.tabs.map(t =>
+    `<option value="${t}">${t}</option>`
+  ).join("");
+  newItemCategory.innerHTML = options;
+  itemListCategoryFilter.innerHTML =
+    `<option value="">全カテゴリ</option>` + options;
+}
+
+function updateColorFields() {
+  const mode = newItemColorMode.value;
+  document.querySelectorAll(".item-color-code-field").forEach(el => {
+    el.style.display = mode === "code" ? "" : "none";
+  });
+  document.querySelectorAll(".item-color-name-field").forEach(el => {
+    el.style.display = mode === "name" ? "" : "none";
+  });
+}
+
+function renderItemList(filterCategory = "") {
+  const allBuiltin = [...supplies, ...paints];
+  const allCustom = appState.customItems;
+
+  let items = [
+    ...allBuiltin.map(i => ({ ...i, isCustom: false })),
+    ...allCustom.map(i => ({ ...i, isCustom: true }))
+  ];
+
+  if (filterCategory) {
+    items = items.filter(i => i.category === filterCategory);
+  }
+
+  if (items.length === 0) {
+    itemList.innerHTML = '<div class="site-list-empty">該当する材料がありません</div>';
+    return;
+  }
+
+  const groups = {};
+  items.forEach(item => {
+    if (!groups[item.category]) groups[item.category] = [];
+    groups[item.category].push(item);
+  });
+
+  itemList.innerHTML = "";
+  Object.entries(groups).forEach(([category, categoryItems]) => {
+    const groupEl = document.createElement("div");
+    groupEl.className = "item-list-group";
+    groupEl.innerHTML = `<div class="item-list-group-label">${category}</div>`;
+
+    categoryItems.forEach(item => {
+      const isDeleted = !item.isCustom &&
+        appState.deletedItemKeys.includes(itemKey(item.manufacturer, item.name));
+      const row = document.createElement("div");
+      row.className = "site-list-item item-list-row" + (isDeleted ? " item-deleted" : "");
+      row.innerHTML = `
+        <div class="site-list-info">
+          <div class="site-list-name">
+            ${item.name}
+            ${item.isCustom
+              ? '<span class="item-badge item-badge-custom">カスタム</span>'
+              : '<span class="item-badge item-badge-builtin">標準</span>'}
+            ${isDeleted ? '<span class="item-badge item-badge-deleted">削除済</span>' : ""}
+          </div>
+          <div class="site-list-address">${item.manufacturer}</div>
+        </div>
+        <div class="item-list-actions">
+          ${isDeleted
+            ? `<button class="restore-item-btn site-delete-btn restore-btn" data-key="${itemKey(item.manufacturer, item.name)}">復元</button>`
+            : `<button class="delete-item-btn site-delete-btn" data-key="${itemKey(item.manufacturer, item.name)}" data-custom="${item.isCustom}" data-name="${item.name}">削除</button>`
+          }
+        </div>
+      `;
+      groupEl.appendChild(row);
+    });
+    itemList.appendChild(groupEl);
+  });
+
+  itemList.querySelectorAll(".delete-item-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      const isCustom = btn.dataset.custom === "true";
+      const name = btn.dataset.name;
+      showConfirm(`「${name}」を削除してよろしいですか？`, () => {
+        if (isCustom) {
+          appState.customItems = appState.customItems.filter(
+            i => itemKey(i.manufacturer, i.name) !== key
+          );
+          saveCustomItems();
+        } else {
+          if (!appState.deletedItemKeys.includes(key)) {
+            appState.deletedItemKeys.push(key);
+          }
+          saveDeletedItemKeys();
+        }
+        render();
+        renderItemList(itemListCategoryFilter.value);
+      });
+    });
+  });
+
+  itemList.querySelectorAll(".restore-item-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      appState.deletedItemKeys = appState.deletedItemKeys.filter(k => k !== key);
+      saveDeletedItemKeys();
+      render();
+      renderItemList(itemListCategoryFilter.value);
+      showToast("材料を復元しました");
+    });
+  });
+}
+
+function addItem() {
+  const category = newItemCategory.value;
+  const manufacturer = newItemMaker.value.trim();
+  const name = newItemName.value.trim();
+  const units = parseCSV(newItemUnits.value);
+  const capacities = parseCSV(newItemCapacities.value);
+  const colorMode = newItemColorMode.value;
+  const colorNames = parseCSV(newItemColorNames.value);
+  const defaultColorCode = newItemDefaultColorCode.value.trim();
+  const glosses = parseCSV(newItemGlosses.value);
+
+  if (!category || !manufacturer || !name || units.length === 0) {
+    showToast("カテゴリ・メーカー・商品名・単位は必須です");
+    return;
+  }
+
+  const existing = [...supplies, ...paints, ...appState.customItems];
+  if (existing.some(i => i.manufacturer === manufacturer && i.name === name)) {
+    showToast(`「${name}」は既に登録されています`);
+    return;
+  }
+
+  const newItem = {
+    id: Date.now(),
+    category,
+    manufacturer,
+    name,
+    quantity: 1,
+    unitOptions: units,
+    defaultUnit: units[0],
+    isCustom: true,
+    ...(capacities.length > 0 && {
+      capacityOptions: capacities,
+      defaultCapacity: capacities[0]
+    }),
+    colorMode,
+    colorNameOptions: colorNames,
+    defaultColorName: colorNames[0] || "",
+    colorCodeEnabled: colorMode === "code",
+    defaultColorCode: colorMode === "code" ? defaultColorCode : "",
+    glossOptions: glosses,
+    defaultGloss: glosses[0] || ""
+  };
+
+  appState.customItems.push(newItem);
+  saveCustomItems();
+  render();
+  renderItemList(itemListCategoryFilter.value);
+  resetItemForm();
+  showToast(`「${name}」を追加しました`);
 }
 
 /* ── Combobox ─────────────────────────────── */
@@ -819,18 +1057,17 @@ function addSite() {
   showToast(`「${name}」を登録しました`);
 }
 
+function getBuiltinItemsForCategory(category) {
+  const all = [...supplies, ...paints];
+  return all
+    .filter(item => item.category === category)
+    .filter(item => !appState.deletedItemKeys.includes(itemKey(item.manufacturer, item.name)));
+}
+
 function getItemsByTab(tabName) {
-  switch (tabName) {
-    case "養生":
-    case "容器":
-    case "刷毛":
-    case "ローラー":
-      return supplies.filter(s => s.category === tabName);
-    case "塗料":
-      return paints;
-    default:
-      return [];
-  }
+  const builtin = getBuiltinItemsForCategory(tabName);
+  const custom = appState.customItems.filter(item => item.category === tabName);
+  return [...builtin, ...custom];
 }
 
 function getHeaderText() {
@@ -1298,6 +1535,14 @@ addressInput.addEventListener("input", (e) => {
   refreshPreview();
 });
 
+openItemModalBtn.addEventListener("click", openItemModal);
+closeItemModalBtn.addEventListener("click", closeItemModal);
+itemModal.addEventListener("click", (e) => { if (e.target === itemModal) closeItemModal(); });
+addItemBtn.addEventListener("click", addItem);
+newItemColorMode.addEventListener("change", updateColorFields);
+itemListCategoryFilter.addEventListener("change", () => renderItemList(itemListCategoryFilter.value));
+newItemName.addEventListener("keydown", (e) => { if (e.key === "Enter") addItem(); });
+
 openTabModalBtn.addEventListener("click", openTabModal);
 closeTabModalBtn.addEventListener("click", closeTabModal);
 tabModal.addEventListener("click", (e) => { if (e.target === tabModal) closeTabModal(); });
@@ -1327,6 +1572,8 @@ if (scrollToBottomBtn) {
 }
 
 loadRegisteredSites();
+loadCustomItems();
+loadDeletedItemKeys();
 loadTabs();
 updateSiteDatalist();
 renderTabs();
