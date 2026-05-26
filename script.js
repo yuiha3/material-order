@@ -698,7 +698,7 @@ function parseCSV(str) {
 
 function openItemModal() {
   populateItemCategorySelects();
-  renderItemList(itemListCategoryFilter.value);
+  renderItemModalList(itemListCategoryFilter.value);
   itemModal.style.display = "flex";
   document.body.style.overflow = "hidden";
 }
@@ -740,7 +740,7 @@ function updateColorFields() {
   });
 }
 
-function renderItemList(filterCategory = "") {
+function renderItemModalList(filterCategory = "") {
   const allBuiltin = [...supplies, ...paints];
   const allCustom = appState.customItems;
 
@@ -816,7 +816,7 @@ function renderItemList(filterCategory = "") {
           saveDeletedItemKeys();
         }
         render();
-        renderItemList(itemListCategoryFilter.value);
+        renderItemModalList(itemListCategoryFilter.value);
       });
     });
   });
@@ -827,7 +827,7 @@ function renderItemList(filterCategory = "") {
       appState.deletedItemKeys = appState.deletedItemKeys.filter(k => k !== key);
       saveDeletedItemKeys();
       render();
-      renderItemList(itemListCategoryFilter.value);
+      renderItemModalList(itemListCategoryFilter.value);
       showToast("材料を復元しました");
     });
   });
@@ -880,7 +880,7 @@ function addItem() {
   appState.customItems.push(newItem);
   saveCustomItems();
   render();
-  renderItemList(itemListCategoryFilter.value);
+  renderItemModalList(itemListCategoryFilter.value);
   resetItemForm();
   showToast(`「${name}」を追加しました`);
 }
@@ -1299,7 +1299,7 @@ function buildItemCard(item) {
   return card;
 }
 
-function renderItemList(items) {
+function renderMakers(items) {
   makersContainer.innerHTML = "";
 
   const grouped = groupByManufacturer(items);
@@ -1420,7 +1420,7 @@ function render() {
     return `${item.manufacturer} ${item.name}`.toLowerCase().includes(keyword);
   });
 
-  renderItemList(filteredItems);
+  renderMakers(filteredItems);
   refreshPreview();
 }
 
@@ -1541,7 +1541,7 @@ closeItemModalBtn.addEventListener("click", closeItemModal);
 itemModal.addEventListener("click", (e) => { if (e.target === itemModal) closeItemModal(); });
 addItemBtn.addEventListener("click", addItem);
 newItemColorMode.addEventListener("change", updateColorFields);
-itemListCategoryFilter.addEventListener("change", () => renderItemList(itemListCategoryFilter.value));
+itemListCategoryFilter.addEventListener("change", () => renderItemModalList(itemListCategoryFilter.value));
 newItemName.addEventListener("keydown", (e) => { if (e.key === "Enter") addItem(); });
 
 openTabModalBtn.addEventListener("click", openTabModal);
