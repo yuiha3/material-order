@@ -1157,33 +1157,6 @@ textarea:focus {
   color: var(--brand);
 }
 
-/* ─── Item manage button ─────────────────── */
-
-.toolbar {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.item-manage-btn {
-  width: 100%;
-  height: 42px;
-  border: 1.5px dashed var(--brand-border);
-  border-radius: var(--radius-lg);
-  background: var(--brand-bg);
-  color: var(--brand);
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.item-manage-btn:hover {
-  background: var(--brand-bg-deep);
-  border-style: solid;
-}
-
 /* ─── Item modal ─────────────────────────── */
 
 .modal-card-wide {
