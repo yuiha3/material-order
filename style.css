@@ -1305,7 +1305,4 @@ textarea:focus {
   border-style: solid;
 }
 
-/* tabs-row no longer needs the ⚙ button space */
-.tabs-row {
-  margin-bottom: 0;
-}
+
