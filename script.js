@@ -1,6 +1,6 @@
 const supplies = [
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "ダイヤテックス",
     name: "パイオランテープ50mm x 25m",
     quantity: 1,
@@ -8,7 +8,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "Nitto",
     name: "ニトクロステープ茶色No.7503  30mm x 25m",
     quantity: 1,
@@ -16,7 +16,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "カモ井",
     name: "ルパン(24mm)",
     quantity: 1,
@@ -24,7 +24,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "カモ井",
     name: "ルパンクーペ(24mm)",
     quantity: 1,
@@ -32,7 +32,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "カモ井",
     name: "グレートサスケ(24mm)",
     quantity: 1,
@@ -40,7 +40,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "カモ井",
     name: "SR-100 シリコーンテープ(18mm)",
     quantity: 1,
@@ -48,7 +48,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "スコッチ",
     name: "マスキングテープ 99BB",
     quantity: 1,
@@ -56,7 +56,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "スコッチ",
     name: "マスキングテープ 80S",
     quantity: 1,
@@ -64,7 +64,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "大塚刷毛",
     name: "コロナマスカー(ミニタイプ25m) 300mm",
     quantity: 1,
@@ -72,7 +72,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "大塚刷毛",
     name: "コロナマスカー(ミニタイプ25m) 550mm",
     quantity: 1,
@@ -80,7 +80,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "養生",
     manufacturer: "大塚刷毛",
     name: "コロナマスカー(ミニタイプ25m) 1100mm",
     quantity: 1,
@@ -88,7 +88,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "容器",
     manufacturer: "大塚刷毛",
     name: "さげっと用 内容器凹凸",
     quantity: 1,
@@ -96,7 +96,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "容器",
     manufacturer: "大塚刷毛",
     name: "タッチアップセパレート容器 ハーフ",
     quantity: 1,
@@ -104,7 +104,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "容器",
     manufacturer: "大塚刷毛",
     name: "タッチアップセパレート容器 クォーター",
     quantity: 1,
@@ -112,7 +112,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "容器",
     manufacturer: "大塚刷毛",
     name: "一斗缶内容器",
     quantity: 1,
@@ -120,7 +120,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "容器",
     manufacturer: "大塚刷毛",
     name: "ローラーバケットSXタイプ内容器",
     quantity: 1,
@@ -128,7 +128,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "容器",
     manufacturer: "大塚刷毛",
     name: "らくらくカートリッジ1型",
     quantity: 1,
@@ -136,7 +136,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "容器",
     manufacturer: "大塚刷毛",
     name: "らくらくカートリッジ3型",
     quantity: 1,
@@ -144,7 +144,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "刷毛",
     manufacturer: "大塚刷毛",
     name: "豚毛金巻 8号",
     quantity: 1,
@@ -152,7 +152,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "刷毛",
     manufacturer: "大塚刷毛",
     name: "BKラスターN短柄 1.5インチ",
     quantity: 1,
@@ -160,7 +160,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "刷毛",
     manufacturer: "大塚刷毛",
     name: "BKラスターN短柄 2インチ",
     quantity: 1,
@@ -168,7 +168,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "刷毛",
     manufacturer: "大塚刷毛",
     name: "BKラスターN短柄 2.5インチ",
     quantity: 1,
@@ -176,7 +176,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "スカーレットEX(25mm) 6インチ",
     quantity: 1,
@@ -184,7 +184,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "スカーレットEX(20mm) 6インチ",
     quantity: 1,
@@ -192,7 +192,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "スカーレットEX(20mm) 3インチ",
     quantity: 1,
@@ -200,7 +200,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "ツイスト(18mm) 6インチ",
     quantity: 1,
@@ -208,7 +208,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "ツイスト(18mm) 4インチ",
     quantity: 1,
@@ -216,7 +216,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "ツイスト(18mm) 3インチ",
     quantity: 1,
@@ -224,7 +224,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "スクリュー(21mm) 6インチ",
     quantity: 1,
@@ -232,7 +232,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "スクリュー(21mm) 4インチ",
     quantity: 1,
@@ -240,7 +240,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "Sky(13mm) 6インチ",
     quantity: 1,
@@ -248,7 +248,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "Sky(13mm) 4インチ",
     quantity: 1,
@@ -256,7 +256,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "Sky(13mm) 3インチ",
     quantity: 1,
@@ -264,7 +264,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "Micro ACE(13mm) 6インチ",
     quantity: 1,
@@ -272,7 +272,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "Micro ACE(13mm) 4インチ",
     quantity: 1,
@@ -280,7 +280,7 @@ const supplies = [
     defaultUnit: "箱"
   },
   {
-    category: "資材",
+    category: "ローラー",
     manufacturer: "大塚刷毛",
     name: "Micro ACE(13mm) 3インチ",
     quantity: 1,
@@ -291,7 +291,7 @@ const supplies = [
 
 const paints = [
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "アレスホルダーHG",
     capacityOptions: ["16kg"],
@@ -308,7 +308,7 @@ const paints = [
     defaultGloss: ""
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "アレスダイナミックフィラー",
     capacityOptions: ["16kg"],
@@ -325,7 +325,7 @@ const paints = [
     defaultGloss: ""
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "アレスダイナミックプラサフII",
     capacityOptions: ["16kg"],
@@ -342,7 +342,7 @@ const paints = [
     defaultGloss: ""
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "アレスダイナミックTOP",
     capacityOptions: ["16kg", "4kg"],
@@ -359,7 +359,7 @@ const paints = [
     defaultGloss: "艶あり"
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "セラMレタン",
     capacityOptions: ["16kg", "4kg"],
@@ -376,7 +376,7 @@ const paints = [
     defaultGloss: "艶あり"
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "セラMシリコン",
     capacityOptions: ["16kg", "4kg"],
@@ -393,7 +393,7 @@ const paints = [
     defaultGloss: "艶あり"
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "スーパーザウルスII",
     capacityOptions: ["16kg", "4kg"],
@@ -410,7 +410,7 @@ const paints = [
     defaultGloss: ""
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "関西ペイント",
     name: "ザウルスEX II",
     capacityOptions: ["16kg", "4kg"],
@@ -427,7 +427,7 @@ const paints = [
     defaultGloss: ""
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "エスケー化研",
     name: "水性ミラクシーラーエコ",
     capacityOptions: ["15kg"],
@@ -444,7 +444,7 @@ const paints = [
     defaultGloss: ""
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "エスケー化研",
     name: "水性エコファイン",
     capacityOptions: ["16kg", "4kg"],
@@ -461,7 +461,7 @@ const paints = [
     defaultGloss: "艶あり"
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "日本ペイント",
     name: "水性ケンエース",
     capacityOptions: ["16kg", "4kg"],
@@ -478,7 +478,7 @@ const paints = [
     defaultGloss: "艶なし"
   },
   {
-    category: "塗装",
+    category: "塗料",
     manufacturer: "日本ペイント",
     name: "水性ケンエースグロス",
     capacityOptions: ["16kg", "4kg"],
@@ -496,14 +496,11 @@ const paints = [
   }
 ];
 
-const sealants = [];
-const waterproofs = [];
-
 const STAFF_NAMES = ["高崎", "上田", "石澤", "栗原", "齊藤", "ウンス", "滝本", "山下", "藤ノ木", "福王寺", "大浦"];
 const PLACEHOLDER_TEXT = "(選択した材料がここに表示されます)";
 
 const appState = {
-  activeTab: "資材",
+  activeTab: "養生",
   selectedStaffName: "藤ノ木",
   selectedLocation: "新座倉庫入れ",
   selectedSiteName: "なし",
@@ -722,14 +719,13 @@ function addSite() {
 
 function getItemsByTab(tabName) {
   switch (tabName) {
-    case "資材":
-      return supplies;
-    case "塗装":
+    case "養生":
+    case "容器":
+    case "刷毛":
+    case "ローラー":
+      return supplies.filter(s => s.category === tabName);
+    case "塗料":
       return paints;
-    case "シール":
-      return sealants;
-    case "防水":
-      return waterproofs;
     default:
       return [];
   }

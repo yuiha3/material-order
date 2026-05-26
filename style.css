@@ -256,6 +256,7 @@ body {
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-lg);
   padding: 5px;
+  flex-wrap: wrap;
 }
 
 .tab-btn {
