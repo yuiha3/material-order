@@ -1481,7 +1481,8 @@ locationSelect.addEventListener("change", (e) => {
   appState.selectedLocation = e.target.value;
   const isOnsite = e.target.value === "現場入れ";
   addressField.style.display = isOnsite ? "grid" : "none";
-  siteNameInput.labels[0].querySelector(".site-required-badge").style.display = isOnsite ? "inline-block" : "none";
+  const siteRequiredBadge = document.querySelector(".site-required-badge");
+  if (siteRequiredBadge) siteRequiredBadge.style.display = isOnsite ? "inline-block" : "none";
   if (!isOnsite) {
     appState.selectedAddress = "";
     addressInput.value = "";
