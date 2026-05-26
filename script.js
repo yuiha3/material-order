@@ -716,7 +716,7 @@ function resetItemForm() {
    newItemDefaultColorCode, newItemColorNames, newItemGlosses]
     .forEach(el => { el.value = ""; });
   newItemColorMode.value = "none";
-  updateColorFields();
+  updatePaintFields();
 }
 
 function populateItemCategorySelects() {
@@ -725,14 +725,21 @@ function populateItemCategorySelects() {
   itemListCategoryFilter.innerHTML = `<option value="">全カテゴリ</option>` + options;
 }
 
-function updateColorFields() {
-  const mode = newItemColorMode.value;
+function updatePaintFields() {
+  const isPaint = newItemCategory.value === "塗料";
+  const mode    = newItemColorMode.value;
+
+  document.querySelectorAll(".item-paint-field").forEach(el => {
+    el.style.display = isPaint ? "" : "none";
+  });
   document.querySelectorAll(".item-color-code-field").forEach(el => {
-    el.style.display = mode === "code" ? "" : "none";
+    el.style.display = isPaint && mode === "code" ? "" : "none";
   });
   document.querySelectorAll(".item-color-name-field").forEach(el => {
-    el.style.display = mode === "name" ? "" : "none";
+    el.style.display = isPaint && mode === "name" ? "" : "none";
   });
+
+  if (!isPaint) newItemColorMode.value = "none";
 }
 
 function renderItemModalList(filterCategory = "") {
@@ -766,9 +773,6 @@ function renderItemModalList(filterCategory = "") {
         <div class="site-list-info">
           <div class="site-list-name">
             ${item.name}
-            <span class="item-badge ${item.isCustom ? "item-badge-custom" : "item-badge-builtin"}">
-              ${item.isCustom ? "カスタム" : "標準"}
-            </span>
             ${isDeleted ? '<span class="item-badge item-badge-deleted">削除済</span>' : ""}
           </div>
           <div class="site-list-address">${item.manufacturer}</div>
@@ -1339,7 +1343,8 @@ openItemModalBtn .addEventListener("click", openItemModal);
 closeItemModalBtn.addEventListener("click", closeItemModal);
 itemModal        .addEventListener("click", (e) => { if (e.target === itemModal) closeItemModal(); });
 addItemBtn       .addEventListener("click", addItem);
-newItemColorMode .addEventListener("change", updateColorFields);
+newItemCategory  .addEventListener("change", updatePaintFields);
+newItemColorMode .addEventListener("change", updatePaintFields);
 itemListCategoryFilter.addEventListener("change", () => renderItemModalList(itemListCategoryFilter.value));
 newItemName      .addEventListener("keydown", (e) => { if (e.key === "Enter") addItem(); });
 
